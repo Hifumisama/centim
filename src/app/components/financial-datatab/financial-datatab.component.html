@@ -1,18 +1,118 @@
-<p-table responsiveLayout="scroll" styleClass="p-datatable-striped" [value]="data">
+<p-table
+  responsiveLayout="scroll"
+  styleClass="p-datatable-striped"
+  editMode="row"
+  [value]="data"
+  dataKey="id"
+>
   <ng-template pTemplate="header">
-      <tr>
-          <th>Utilisateur</th>
-          <th>Montant</th>
-          <th>Catégorie</th>
-          <th>Description</th>
-      </tr>
+    <tr>
+      <th>Utilisateur</th>
+      <th>Montant</th>
+      <th>Catégorie</th>
+      <th>Description</th>
+      <th>Editer</th>
+    </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-data>
-      <tr>
-          <td>{{data.username}}</td>
-          <td>{{data.amount | currency:'EUR':'symbol':'1.2':'fr'}}</td>
-          <td>{{data.category}}</td>
-          <td>{{data.reason || getNameCategory(data.category)}}</td>
-      </tr>
+  <ng-template
+    pTemplate="body"
+    let-data
+    let-editing="editing"
+    let-ri="rowIndex"
+  >
+    <tr [pEditableRow]="data">
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              [style]="{ width: '100%' }"
+              pInputText
+              type="text"
+              [(ngModel)]="data.username"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.username }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              [style]="{ width: '100%' }"
+              pInputText
+              type="text"
+              [(ngModel)]="data.amount"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.amount | currency: "EUR":"symbol":"1.2":"fr" }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <p-dropdown
+              class="responsive"
+              [options]="dropDownCategories"
+              [(ngModel)]="data.category"
+              [style]="{ width: '100%' }"
+            ></p-dropdown>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.category }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              [style]="{ width: '100%' }"
+              pInputText
+              type="text"
+              [(ngModel)]="data.reason"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.reason || data.category }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td style="text-align: center">
+        <button
+          *ngIf="!editing"
+          pButton
+          pRipple
+          type="button"
+          pInitEditableRow
+          icon="pi pi-pencil"
+          (click)="onRowEditInit(data)"
+          class="p-button-rounded p-button-text"
+        ></button>
+        <button
+          *ngIf="editing"
+          pButton
+          pRipple
+          type="button"
+          pSaveEditableRow
+          icon="pi pi-check"
+          (click)="onRowEditSave(data)"
+          class="p-button-rounded p-button-text p-button-success mr-2"
+        ></button>
+        <button
+          *ngIf="editing"
+          pButton
+          pRipple
+          type="button"
+          pCancelEditableRow
+          icon="pi pi-times"
+          (click)="onRowEditCancel(data, ri)"
+          class="p-button-rounded p-button-text p-button-danger"
+        ></button>
+      </td>
+    </tr>
   </ng-template>
 </p-table>

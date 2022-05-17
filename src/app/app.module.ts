@@ -1,9 +1,10 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TableModule} from 'primeng/table';
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,23 +13,26 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 registerLocaleData(localeFr);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainPageComponent,
-    FinancialDatatabComponent
-  ],
+  declarations: [AppComponent, MainPageComponent, FinancialDatatabComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+
+    InputTextModule,
+    DropdownModule,
     TableModule,
-    AppRoutingModule
+    ButtonModule,
+    CardModule,
   ],
-  providers: [
-    { provide: LOCALE_ID, useValue: 'fr-FR'},
-  ],
-  bootstrap: [AppComponent]
+  providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }, MessageService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
