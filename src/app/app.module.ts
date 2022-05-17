@@ -5,6 +5,7 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,10 +17,16 @@ import localeFr from '@angular/common/locales/fr';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { FinancesPortionComponent } from './components/finances-portion/finances-portion.component';
 registerLocaleData(localeFr);
 
 @NgModule({
-  declarations: [AppComponent, MainPageComponent, FinancialDatatabComponent],
+  declarations: [
+    AppComponent,
+    MainPageComponent,
+    FinancialDatatabComponent,
+    FinancesPortionComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -31,6 +38,7 @@ registerLocaleData(localeFr);
     TableModule,
     ButtonModule,
     CardModule,
+    ChartModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }, MessageService],
   bootstrap: [AppComponent],

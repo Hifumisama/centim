@@ -4,8 +4,8 @@ export const mockData: DataSeries[] = [
   {
     id: 'a',
     username: 'Mehdi',
-    amount: 10,
-    category: 'Restaurant',
+    amount: 40,
+    category: 'Restaurants',
     reason: 'Restaurant de mariage',
   },
   {
@@ -35,6 +35,13 @@ export const mockData: DataSeries[] = [
     category: 'Charges',
     reason: 'Facture internet',
   },
+  {
+    id: 'e',
+    username: 'Sophia',
+    amount: 60,
+    category: 'Charges',
+    reason: 'Facture d eau',
+  },
 ];
 
 export const categories = [
@@ -47,37 +54,37 @@ export const categories = [
   {
     id: 2,
     name: 'Restaurants',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#eb0707',
     description: '',
   },
   {
     id: 3,
     name: 'Courses',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#1fed22',
     description: '',
   },
   {
     id: 4,
     name: 'Charges',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#ed641f',
     description: '',
   },
   {
     id: 5,
     name: 'Loyer',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#1636c7',
     description: '',
   },
   {
     id: 6,
     name: 'Divers',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#c010e3',
     description: '',
   },
   {
     id: 7,
     name: 'Autres',
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#6d6a6e',
     description: '',
   },
 ];
