@@ -17,7 +17,12 @@ export class FinancialDatatabComponent implements OnInit {
     return categories.map((x) => x.name);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.data.sort((a, b) => {
+      return a.transactionDate.getTime() - b.transactionDate.getTime();
+    });
+    console.log(this.data);
+  }
 
   onRowEditInit(dataEdited: DataSeries) {
     const id = this.data.findIndex((x) => x.id === dataEdited.id);
@@ -27,7 +32,6 @@ export class FinancialDatatabComponent implements OnInit {
   onRowEditSave(dataEdited: DataSeries) {
     const id = this.data.findIndex((x) => x.id === dataEdited.id);
     delete this.clonedData[id];
-    console.log(this.data);
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
@@ -39,5 +43,10 @@ export class FinancialDatatabComponent implements OnInit {
     const id = this.data.findIndex((x) => x.id === dataEdited.id);
     this.data[index] = this.clonedData[id];
     delete this.clonedData[id];
+  }
+
+  onRowDelete(index: number) {
+    const newArray = this.data.filter((x, i) => i !== index);
+    this.data = newArray;
   }
 }

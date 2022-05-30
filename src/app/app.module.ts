@@ -6,6 +6,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { CalendarModule } from 'primeng/calendar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,6 +40,7 @@ registerLocaleData(localeFr);
     ButtonModule,
     CardModule,
     ChartModule,
+    CalendarModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }, MessageService],
   bootstrap: [AppComponent],

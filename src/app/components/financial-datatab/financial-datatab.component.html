@@ -1,5 +1,5 @@
 <p-table
-  responsiveLayout="scroll"
+  responsiveLayout="stack"
   styleClass="p-datatable-striped"
   editMode="row"
   [value]="data"
@@ -9,6 +9,7 @@
     <tr>
       <th>Utilisateur</th>
       <th>Montant</th>
+      <th>Date</th>
       <th>Catégorie</th>
       <th>Description</th>
       <th>Editer</th>
@@ -54,6 +55,21 @@
       <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
+            <!-- ajouter le datepicker ici  -->
+            <p-calendar
+              [(ngModel)]="data.transactionDate"
+              [touchUI]="true"
+              [readonlyInput]="true"
+            ></p-calendar>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.transactionDate | date }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
             <p-dropdown
               class="responsive"
               [options]="dropDownCategories"
@@ -90,6 +106,16 @@
           pInitEditableRow
           icon="pi pi-pencil"
           (click)="onRowEditInit(data)"
+          class="p-button-rounded p-button-text"
+        ></button>
+        <button
+          *ngIf="!editing"
+          pButton
+          pRipple
+          type="button"
+          pInitEditableRow
+          icon="pi pi-trash"
+          (click)="onRowDelete(ri)"
           class="p-button-rounded p-button-text"
         ></button>
         <button
