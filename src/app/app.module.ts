@@ -30,6 +30,8 @@ import { FinancesPortionComponent } from './components/finances-portion/finances
 import { FinancialFormComponent } from './components/financial-form/financial-form.component';
 import { DebtResumeComponent } from './components/debt-resume/debt-resume.component';
 import { PositivePipe } from './pipes/positive.pipe';
+import { DebtChartComponent } from './components/debt-chart/debt-chart.component';
+import { FinancialChartComponent } from './components/financial-chart/financial-chart.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -41,6 +43,8 @@ registerLocaleData(localeFr);
     FinancialFormComponent,
     DebtResumeComponent,
     PositivePipe,
+    DebtChartComponent,
+    FinancialChartComponent,
   ],
   imports: [
     BrowserModule,
