@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DataSeries } from 'src/app/data/interfaces';
 import { categories } from 'src/app/data/mockData';
@@ -10,6 +10,8 @@ import { categories } from 'src/app/data/mockData';
 })
 export class FinancialDatatabComponent implements OnInit {
   @Input() data: DataSeries[] = [];
+  @Output() deleteEntry = new EventEmitter<DataSeries>();
+  @Output() updateEntry = new EventEmitter();
   clonedData: DataSeries[] = [];
 
   constructor(private messageService: MessageService) {}
@@ -17,12 +19,7 @@ export class FinancialDatatabComponent implements OnInit {
     return categories.map((x) => x.name);
   }
 
-  ngOnInit(): void {
-    this.data.sort((a, b) => {
-      return a.transactionDate.getTime() - b.transactionDate.getTime();
-    });
-    console.log(this.data);
-  }
+  ngOnInit(): void {}
 
   onRowEditInit(dataEdited: DataSeries) {
     const id = this.data.findIndex((x) => x.id === dataEdited.id);
@@ -32,6 +29,9 @@ export class FinancialDatatabComponent implements OnInit {
   onRowEditSave(dataEdited: DataSeries) {
     const id = this.data.findIndex((x) => x.id === dataEdited.id);
     delete this.clonedData[id];
+
+    this.updateEntry.emit({ update: { data: this.data[id], id } });
+
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
@@ -45,8 +45,7 @@ export class FinancialDatatabComponent implements OnInit {
     delete this.clonedData[id];
   }
 
-  onRowDelete(index: number) {
-    const newArray = this.data.filter((x, i) => i !== index);
-    this.data = newArray;
+  onRowDelete(data: DataSeries) {
+    this.deleteEntry.emit(data);
   }
 }

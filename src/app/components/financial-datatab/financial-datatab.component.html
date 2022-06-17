@@ -7,9 +7,10 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th>Utilisateur</th>
-      <th>Montant</th>
       <th>Date</th>
+      <th>Débiteur doit à</th>
+      <th>Créditeur</th>
+      <th>Montant</th>
       <th>Catégorie</th>
       <th>Description</th>
       <th>Editer</th>
@@ -25,15 +26,45 @@
       <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
+            <!-- ajouter le datepicker ici  -->
+            <p-calendar
+              [(ngModel)]="data.transactionDate"
+              [touchUI]="true"
+              [readonlyInput]="true"
+            ></p-calendar>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.transactionDate | date }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
             <input
               [style]="{ width: '100%' }"
               pInputText
               type="text"
-              [(ngModel)]="data.username"
+              [(ngModel)]="data.debitor"
             />
           </ng-template>
           <ng-template pTemplate="output">
-            {{ data.username }}
+            {{ data.debitor }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              [style]="{ width: '100%' }"
+              pInputText
+              type="text"
+              [(ngModel)]="data.creditor"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ data.creditor }}
           </ng-template>
         </p-cellEditor>
       </td>
@@ -52,21 +83,7 @@
           </ng-template>
         </p-cellEditor>
       </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <!-- ajouter le datepicker ici  -->
-            <p-calendar
-              [(ngModel)]="data.transactionDate"
-              [touchUI]="true"
-              [readonlyInput]="true"
-            ></p-calendar>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.transactionDate | date }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+
       <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
@@ -115,7 +132,7 @@
           type="button"
           pInitEditableRow
           icon="pi pi-trash"
-          (click)="onRowDelete(ri)"
+          (click)="onRowDelete(data)"
           class="p-button-rounded p-button-text"
         ></button>
         <button

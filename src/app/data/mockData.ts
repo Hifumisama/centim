@@ -3,7 +3,8 @@ import { DataSeries } from './interfaces';
 export const mockData: DataSeries[] = [
   {
     id: 'a',
-    username: 'Mehdi',
+    debitor: 'Mehdi',
+    creditor: 'Sophia',
     amount: 40,
     transactionDate: new Date('02/21/2022'),
     category: 'Restaurants',
@@ -11,7 +12,8 @@ export const mockData: DataSeries[] = [
   },
   {
     id: 'b',
-    username: 'Sopia',
+    debitor: 'Mehdi',
+    creditor: 'Sophia',
     amount: 50,
     transactionDate: new Date('02/02/2022'),
     category: 'Loisirs',
@@ -19,7 +21,8 @@ export const mockData: DataSeries[] = [
   },
   {
     id: 'c',
-    username: 'Mehdi',
+    debitor: 'Sophia',
+    creditor: 'Mehdi',
     amount: 500,
     transactionDate: new Date('02/20/2022'),
     category: 'Loyer',
@@ -27,14 +30,16 @@ export const mockData: DataSeries[] = [
   },
   {
     id: 'd',
-    username: 'Sophia',
+    debitor: 'Sophia',
+    creditor: 'Mehdi',
     amount: 80,
     transactionDate: new Date('02/15/2022'),
     category: 'Courses',
   },
   {
     id: 'e',
-    username: 'Mehdi',
+    debitor: 'Mehdi',
+    creditor: 'Sophia',
     amount: 150,
     transactionDate: new Date('02/13/2022'),
     category: 'Charges',
@@ -42,7 +47,8 @@ export const mockData: DataSeries[] = [
   },
   {
     id: 'f',
-    username: 'Sophia',
+    debitor: 'Mehdi',
+    creditor: 'Sophia',
     amount: 60,
     transactionDate: new Date('02/12/2022'),
     category: 'Charges',

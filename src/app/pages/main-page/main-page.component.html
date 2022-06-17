@@ -1,3 +1,6 @@
-<p>main-page works!</p>
-<app-financial-datatab [data]="dataSeries"></app-financial-datatab>
-<app-finances-portion [data]="dataSeries"></app-finances-portion>
+<app-financial-form (addNewEntry)="addNewEntry($event)"></app-financial-form>
+<app-financial-datatab
+  [data]="dataSeries"
+  (deleteEntry)="deleteEntry($event)"
+  (updateEntry)="updateEntry($event)"
+></app-financial-datatab>
