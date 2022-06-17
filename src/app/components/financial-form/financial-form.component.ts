@@ -33,6 +33,7 @@ export class FinancialFormComponent implements OnInit {
 
   submitForm() {
     if (this.financialForm.valid) {
+      console.log(this.financialForm.value);
       const result: DataSeries = {
         id: uuid.v4(),
         ...this.financialForm.value,

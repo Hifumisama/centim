@@ -14,6 +14,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,8 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FinancesPortionComponent } from './components/finances-portion/finances-portion.component';
 import { FinancialFormComponent } from './components/financial-form/financial-form.component';
+import { DebtResumeComponent } from './components/debt-resume/debt-resume.component';
+import { PositivePipe } from './pipes/positive.pipe';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -36,6 +39,8 @@ registerLocaleData(localeFr);
     FinancialDatatabComponent,
     FinancesPortionComponent,
     FinancialFormComponent,
+    DebtResumeComponent,
+    PositivePipe,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +55,7 @@ registerLocaleData(localeFr);
     MatGridListModule,
     MatSelectModule,
     MatButtonModule,
+    MatCardModule,
 
     InputTextModule,
     DropdownModule,

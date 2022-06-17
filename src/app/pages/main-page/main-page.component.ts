@@ -18,6 +18,7 @@ export class MainPageComponent implements OnInit {
 
   addNewEntry(item: DataSeries) {
     this.dataSeries.push(item);
+    console.log('wtf ?! ', this.dataSeries);
   }
   deleteEntry(data: DataSeries) {
     this.dataSeries = this.dataSeries.filter((x) => x.id !== data.id);
