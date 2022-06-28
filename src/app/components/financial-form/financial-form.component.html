@@ -1,74 +1,106 @@
-<form class="example-form" [formGroup]="financialForm">
-  <span>Le :</span>
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Date</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      required
-      formControlName="transactionDate"
-    />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi #picker></mat-datepicker>
-    <mat-error
-      *ngIf="financialForm.controls['transactionDate'].hasError('required')"
+<form
+  class="example-form"
+  [formGroup]="financialForm"
+  fxLayout="column wrap"
+  fxLayoutGap="5px"
+>
+  <div>
+    <span fxFlex="50px" fxFlexAlign="center" style="text-align: center" fx
+      >Le :</span
     >
-      La date est requise
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Débiteur</mat-label>
-    <input matInput required formControlName="debitor" />
-    <mat-error *ngIf="financialForm.controls['debitor'].hasError('required')">
-      Le nom du débiteur est requis
-    </mat-error>
-  </mat-form-field>
-
-  <span>doit à</span>
-
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Créditeur</mat-label>
-    <input matInput required formControlName="creditor" />
-    <mat-error *ngIf="financialForm.controls['creditor'].hasError('required')">
-      Le nom du créditeur est requis
-    </mat-error>
-  </mat-form-field>
-
-  <span>la somme de</span>
-
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Montant</mat-label>
-    <input type="number" matInput required formControlName="amount" />
-    <mat-error *ngIf="financialForm.controls['amount'].hasError('required')">
-      Le montant est requis
-    </mat-error>
-    <span matSuffix>€</span>
-  </mat-form-field>
-
-  <span>pour</span>
-
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Catégorie</mat-label>
-    <mat-select required formControlName="category">
-      <mat-option
-        *ngFor="let category of dropDownCategories"
-        [value]="category"
+    <mat-form-field fxFlex="100" class="example-full-width formItem">
+      <mat-label>Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        required
+        formControlName="transactionDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #picker></mat-datepicker>
+      <mat-error
+        *ngIf="financialForm.controls['transactionDate'].hasError('required')"
       >
-        {{ category }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="financialForm.controls['category'].hasError('required')">
-      Le choix de la catégorie est requis
-    </mat-error>
-  </mat-form-field>
-
+        La date est requise
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="example-full-width formItem" fxFlex="50">
+      <mat-label>Débiteur</mat-label>
+      <input matInput required formControlName="debitor" />
+      <mat-error *ngIf="financialForm.controls['debitor'].hasError('required')">
+        Le nom du débiteur est requis
+      </mat-error>
+    </mat-form-field>
+    <span fxFlex="50px" fxFlexAlign="center" style="text-align: center"
+      >doit à</span
+    >
+    <mat-form-field class="example-full-width formItem" fxFlex="50">
+      <mat-label>Créditeur</mat-label>
+      <input matInput required formControlName="creditor" />
+      <mat-error
+        *ngIf="financialForm.controls['creditor'].hasError('required')"
+      >
+        Le nom du créditeur est requis
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <span fxFlex="100px" fxFlexAlign="center" style="text-align: center"
+      >La somme de</span
+    >
+    <mat-form-field
+      class="example-full-width formItem"
+      fxFlex="50"
+      fxFlex.sm="100"
+    >
+      <mat-label>Montant</mat-label>
+      <input type="number" matInput required formControlName="amount" />
+      <mat-error *ngIf="financialForm.controls['amount'].hasError('required')">
+        Le montant est requis
+      </mat-error>
+      <span matSuffix>€</span>
+    </mat-form-field>
+    <span
+      fxFlex="50px"
+      fxFlexAlign="center"
+      style="text-align: center"
+      fxFlex.sm="100"
+      >pour</span
+    >
+    <mat-form-field
+      class="example-full-width formItem"
+      fxFlex="40"
+      fxFlex.xs="100"
+    >
+      <mat-label>Catégorie</mat-label>
+      <mat-select required formControlName="category">
+        <mat-option
+          *ngFor="let category of dropDownCategories"
+          [value]="category"
+        >
+          {{ category }}
+        </mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="financialForm.controls['category'].hasError('required')"
+      >
+        Le choix de la catégorie est requis
+      </mat-error>
+    </mat-form-field>
+  </div>
   <mat-form-field class="example-full-width formItem">
     <mat-label>Détails</mat-label>
     <input matInput formControlName="reason" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="submitForm()">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitForm()"
+    fxFlexAlign="center"
+  >
     Valider
   </button>
 </form>

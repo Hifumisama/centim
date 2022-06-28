@@ -15,6 +15,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  MatDialog,
+  MatDialogModule,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +40,8 @@ import { DebtResumeComponent } from './components/debt-resume/debt-resume.compon
 import { PositivePipe } from './pipes/positive.pipe';
 import { DebtChartComponent } from './components/debt-chart/debt-chart.component';
 import { FinancialChartComponent } from './components/financial-chart/financial-chart.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -45,6 +55,7 @@ registerLocaleData(localeFr);
     PositivePipe,
     DebtChartComponent,
     FinancialChartComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +71,12 @@ registerLocaleData(localeFr);
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    MatTableModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatDialogModule,
+
+    FlexLayoutModule,
 
     InputTextModule,
     DropdownModule,

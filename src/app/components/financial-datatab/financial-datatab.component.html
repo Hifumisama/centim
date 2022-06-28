@@ -1,161 +1,118 @@
-<p-table
-  responsiveLayout="stack"
-  styleClass="p-datatable-striped"
-  editMode="row"
-  [value]="data"
-  dataKey="id"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Date</th>
-      <th>Débiteur doit à</th>
-      <th>Créditeur</th>
-      <th>Montant</th>
-      <th>Catégorie</th>
-      <th>Description</th>
-      <th>Editer</th>
-    </tr>
-  </ng-template>
-  <ng-template
-    pTemplate="body"
-    let-data
-    let-editing="editing"
-    let-ri="rowIndex"
-  >
-    <tr [pEditableRow]="data">
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <!-- ajouter le datepicker ici  -->
-            <p-calendar
-              [(ngModel)]="data.transactionDate"
-              [touchUI]="true"
-              [readonlyInput]="true"
-            ></p-calendar>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.transactionDate | date }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input
-              [style]="{ width: '100%' }"
-              pInputText
-              type="text"
-              [(ngModel)]="data.debitor"
-            />
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.debitor }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input
-              [style]="{ width: '100%' }"
-              pInputText
-              type="text"
-              [(ngModel)]="data.creditor"
-            />
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.creditor }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input
-              [style]="{ width: '100%' }"
-              pInputText
-              type="number"
-              [(ngModel)]="data.amount"
-            />
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.amount | currency: "EUR":"symbol":"1.2":"fr" }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+<mat-card>
+  <mat-card-title> Tableau de suivi des finances </mat-card-title>
+  <mat-card-content>
+    <table
+      mat-table
+      [dataSource]="data"
+      class="mat-elevation-z8"
+      multiTemplateDataRows
+    >
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
 
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-dropdown
-              class="responsive"
-              [options]="dropDownCategories"
-              [(ngModel)]="data.category"
-              [style]="{ width: '100%' }"
-            ></p-dropdown>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.category }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input
-              [style]="{ width: '100%' }"
-              pInputText
-              type="text"
-              [(ngModel)]="data.reason"
-            />
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ data.reason || data.category }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td style="text-align: center">
-        <button
-          *ngIf="!editing"
-          pButton
-          pRipple
-          type="button"
-          pInitEditableRow
-          icon="pi pi-pencil"
-          (click)="onRowEditInit(data)"
-          class="p-button-rounded p-button-text"
-        ></button>
-        <button
-          *ngIf="!editing"
-          pButton
-          pRipple
-          type="button"
-          pInitEditableRow
-          icon="pi pi-trash"
-          (click)="onRowDelete(data)"
-          class="p-button-rounded p-button-text"
-        ></button>
-        <button
-          *ngIf="editing"
-          pButton
-          pRipple
-          type="button"
-          pSaveEditableRow
-          icon="pi pi-check"
-          (click)="onRowEditSave(data)"
-          class="p-button-rounded p-button-text p-button-success mr-2"
-        ></button>
-        <button
-          *ngIf="editing"
-          pButton
-          pRipple
-          type="button"
-          pCancelEditableRow
-          icon="pi pi-times"
-          (click)="onRowEditCancel(data, ri)"
-          class="p-button-rounded p-button-text p-button-danger"
-        ></button>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+      <!-- Position Column -->
+      <ng-container matColumnDef="transactionDate">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.transactionDate | date }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="transaction">
+        <th mat-header-cell *matHeaderCellDef>Transaction</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.debitor }} -> {{ element.creditor }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Montant</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.amount | currency: "EUR":"symbol":"1.2":"fr" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+          &nbsp;
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            aria-label="expand row"
+            (click)="getExpandElement(element)"
+          >
+            <mat-icon *ngIf="expandedElement !== element"
+              >keyboard_arrow_down</mat-icon
+            >
+            <mat-icon *ngIf="expandedElement === element"
+              >keyboard_arrow_up</mat-icon
+            >
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [attr.colspan]="displayedColumns.length"
+        >
+          <div
+            class="example-element-detail"
+            [@detailExpand]="
+              element === expandedElement ? 'expanded' : 'collapsed'
+            "
+          >
+            <div class="container">
+              <div class="details">
+                <span> Date: {{ element.transactionDate | date }} </span>
+                <span> Description: {{ element.reason }} </span>
+              </div>
+              <div class="actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  aria-label="Add"
+                  (click)="openEditDialog(element)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  aria-label="Delete"
+                  (click)="onRowDelete(element)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: displayedColumns"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="getExpandElement(element)"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+      ></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
