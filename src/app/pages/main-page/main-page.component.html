@@ -1,21 +1,17 @@
-<app-header></app-header>
-<app-financial-datatab
-  [data]="dataSeries"
-  (deleteEntry)="deleteEntry($event)"
-  (updateEntry)="updateEntry($event)"
-></app-financial-datatab>
+<app-header [user]="userProfile"></app-header>
+<app-financial-datatab [data]="sheetData"></app-financial-datatab>
 <app-debt-resume
-  [data]="dataSeries"
+  [data]="sheetData"
   debitorSelected="Mehdi"
   creditorSelected="Sophia"
 ></app-debt-resume>
 <app-debt-chart
-  [data]="dataSeries"
+  [data]="sheetData"
   debitorSelected="Mehdi"
   creditorSelected="Sophia"
 ></app-debt-chart>
 <app-financial-chart
-  [data]="dataSeries"
+  [data]="sheetData"
   debitorSelected="Mehdi"
   creditorSelected="Sophia"
 ></app-financial-chart>

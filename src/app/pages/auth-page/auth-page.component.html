@@ -1,0 +1,29 @@
+<div class="row flex-center flex">
+  <form class="col-6 form-widget">
+    <h1 class="header">Se connecter</h1>
+    <div>
+      <input #login class="inputField" type="email" placeholder="Your email" />
+    </div>
+    <div>
+      <input
+        #password
+        class="inputField"
+        type="password"
+        placeholder="Your Password"
+      />
+    </div>
+    <div>
+      <button
+        type="submit"
+        (click)="handleLogin(login.value, password.value)"
+        class="button block"
+        [disabled]="loading"
+      >
+        {{ loading ? "Chargement" : "Connexion" }}
+      </button>
+    </div>
+    <div>
+      <button [routerLink]="'/register'">Créer un compte</button>
+    </div>
+  </form>
+</div>

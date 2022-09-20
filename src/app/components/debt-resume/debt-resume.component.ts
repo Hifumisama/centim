@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { DataSeries } from 'src/app/data/interfaces';
+import { DebtItem } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-debt-resume',
@@ -7,7 +8,7 @@ import { DataSeries } from 'src/app/data/interfaces';
   styleUrls: ['./debt-resume.component.scss'],
 })
 export class DebtResumeComponent implements OnChanges {
-  @Input() data: DataSeries[] = [];
+  @Input() data: DebtItem[] = [];
   @Input() debitorSelected: string = '';
   @Input() creditorSelected: string = '';
   debt: number = 0;
@@ -23,7 +24,7 @@ export class DebtResumeComponent implements OnChanges {
   }
 
   calculateDebt(
-    data: DataSeries[],
+    data: DebtItem[],
     creditorSelected: string,
     debitorSelected: string
   ) {

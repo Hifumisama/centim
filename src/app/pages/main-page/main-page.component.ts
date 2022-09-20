@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DataSeries } from 'src/app/data/interfaces';
-import { mockData } from 'src/app/data/mockData';
+import { DebtItem } from 'src/app/interfaces/interfaces';
+import { Profile, SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-main-page',
@@ -8,23 +10,35 @@ import { mockData } from 'src/app/data/mockData';
   styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private readonly supabase: SupabaseService,
+    private readonly route: ActivatedRoute
+  ) {}
 
-  dataSeries: DataSeries[] = [];
+  userProfile!: Profile;
+  sheetId: string = '';
+  sheetData: DebtItem[] = [];
 
-  ngOnInit(): void {
-    this.dataSeries = mockData;
+  async ngOnInit(): Promise<void> {
+    this.route.paramMap.subscribe((params) => {
+      this.sheetId = params.get('id') || '';
+    });
+    await this.supabase.profile.then(
+      (profile) => (this.userProfile = profile.data)
+    );
+    this.sheetData = (await this.supabase.getDebts(this.sheetId)) as DebtItem[];
+    console.log(this.sheetData);
   }
 
-  addNewEntry(item: DataSeries) {
-    this.dataSeries.push(item);
-    console.log('wtf ?! ', this.dataSeries);
-  }
-  deleteEntry(data: DataSeries) {
-    this.dataSeries = this.dataSeries.filter((x) => x.id !== data.id);
-  }
-  updateEntry(update: { data: DataSeries; id: number }) {
-    this.dataSeries[update.id] = update.data;
-    console.log(this.dataSeries);
-  }
+  // addNewEntry(item: DataSeries) {
+  //   this.dataSeries.push(item);
+  //   console.log('wtf ?! ', this.dataSeries);
+  // }
+  // deleteEntry(data: DataSeries) {
+  //   this.dataSeries = this.dataSeries.filter((x) => x.id !== data.id);
+  // }
+  // updateEntry(update: { data: DataSeries; id: number }) {
+  //   this.dataSeries[update.id] = update.data;
+  //   console.log(this.dataSeries);
+  // }
 }

@@ -42,6 +42,11 @@ import { DebtChartComponent } from './components/debt-chart/debt-chart.component
 import { FinancialChartComponent } from './components/financial-chart/financial-chart.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { CreateUserPageComponent } from './pages/create-user-page/create-user-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { DebtSheetPageComponent } from './pages/debt-sheet-page/debt-sheet-page.component';
+import { DebtListComponent } from './components/debt-list/debt-list.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -56,6 +61,11 @@ registerLocaleData(localeFr);
     DebtChartComponent,
     FinancialChartComponent,
     HeaderComponent,
+    AuthPageComponent,
+    CreateUserPageComponent,
+    ErrorPageComponent,
+    DebtSheetPageComponent,
+    DebtListComponent,
   ],
   imports: [
     BrowserModule,

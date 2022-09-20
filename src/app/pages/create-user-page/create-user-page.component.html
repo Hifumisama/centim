@@ -1,0 +1,37 @@
+<div class="row flex-center flex">
+  <form class="col-6 form-widget">
+    <h1 class="header">Créer son compte</h1>
+    <div>
+      <input #email class="inputField" type="email" placeholder="Your email" />
+    </div>
+    <div>
+      <input
+        #username
+        class="inputField"
+        type="email"
+        placeholder="Your username"
+      />
+    </div>
+    <div>
+      <input
+        #password
+        class="inputField"
+        type="password"
+        placeholder="Your passwords"
+      />
+    </div>
+    <div>
+      <button
+        type="submit"
+        (click)="createUser(email.value, username.value, password.value)"
+        class="button block"
+        [disabled]="loading"
+      >
+        Créer
+      </button>
+    </div>
+    <div>
+      <button [routerLink]="'/login'">Se connecter</button>
+    </div>
+  </form>
+</div>

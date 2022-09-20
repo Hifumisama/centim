@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataSeries } from 'src/app/data/interfaces';
+import { DebtItem } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-financial-chart',
@@ -7,7 +8,7 @@ import { DataSeries } from 'src/app/data/interfaces';
   styleUrls: ['./financial-chart.component.scss'],
 })
 export class FinancialChartComponent implements OnInit {
-  @Input() data: DataSeries[] = [];
+  @Input() data: DebtItem[] = [];
   @Input() debitorSelected = '';
   @Input() creditorSelected = '';
   basicData = {};
@@ -56,7 +57,6 @@ export class FinancialChartComponent implements OnInit {
               ? currentValue.amount + (prevValue[index - 1]?.y || 0)
               : oldValue,
         };
-        console.log(result);
         prevValue.push(result);
         return prevValue;
       },

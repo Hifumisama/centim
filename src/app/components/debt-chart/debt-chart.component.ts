@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DataSeries } from 'src/app/data/interfaces';
+import { DebtItem } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-debt-chart',
@@ -7,14 +7,16 @@ import { DataSeries } from 'src/app/data/interfaces';
   styleUrls: ['./debt-chart.component.scss'],
 })
 export class DebtChartComponent implements OnInit {
-  @Input() data: DataSeries[] = [];
+  @Input() data: DebtItem[] = [];
   @Input() debitorSelected = '';
   @Input() creditorSelected = '';
   basicData = {};
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.data);
+  }
 
   ngOnChanges(): void {
     this.basicData = {
@@ -32,6 +34,7 @@ export class DebtChartComponent implements OnInit {
   }
 
   generateLabels(): string[] {
+    console.log(this.data);
     return this.data
       .sort((a, b) => a.transactionDate.getDate() - b.transactionDate.getDate())
       .map((x) => x.transactionDate.toDateString());
@@ -40,7 +43,7 @@ export class DebtChartComponent implements OnInit {
   generateValues(): number[] {
     return this.data
       .sort((a, b) => a.transactionDate.getDate() - b.transactionDate.getDate())
-      .reduce((previousVal: number[], currentVal: DataSeries, index) => {
+      .reduce((previousVal: number[], currentVal: DebtItem, index) => {
         const value = previousVal[index - 1] || 0;
 
         if (currentVal.creditor === this.creditorSelected) {
