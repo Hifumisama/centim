@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DebtList } from 'src/app/interfaces/interfaces';
+import { SupabaseService } from 'src/app/services/supabase.service';
 @Component({
   selector: 'app-debt-list',
   templateUrl: './debt-list.component.html',
@@ -8,12 +9,28 @@ import { DebtList } from 'src/app/interfaces/interfaces';
 })
 export class DebtListComponent implements OnInit {
   @Input() data: DebtList[] = [];
-  displayedColumns = ['name', 'description', 'createdBy', 'createdAt'];
+  debtSheetSelected!: DebtList;
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly supabase: SupabaseService
+  ) {}
   ngOnInit(): void {}
 
-  goToSheet(id: string) {
+  goToSheet(event: any, id: string) {
     this.router.navigate(['/mainPage', id]);
+  }
+
+  selectDebtSheet(event: any, debtSheet: DebtList) {
+    event.stopPropagation();
+    this.debtSheetSelected = debtSheet;
+  }
+
+  async deleteDebtSheet(event: any, id: string) {
+    event.stopPropagation();
+    await this.supabase.deleteDebtSheets(id).then(() => {
+      const index = this.data.findIndex((x) => x.id === id);
+      console.log('data supprimée :3');
+    });
   }
 }

@@ -6,6 +6,7 @@ import {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { DebtList } from '../interfaces/interfaces';
 
 export interface Profile {
   username: string;
@@ -41,10 +42,25 @@ export class SupabaseService {
       .single();
   }
 
+  // debtSheet manipulation :D
   async getDebtSheets() {
     let { data: feuillesDettes, error } = await this.supabase
       .from('feuillesDettes')
       .select();
+    return feuillesDettes;
+  }
+
+  async upsertDebtSheets(feuilleDette: DebtList) {
+    return this.supabase.from('profiles').upsert(feuilleDette, {
+      returning: 'minimal', // Don't return the value after inserting
+    });
+  }
+
+  async deleteDebtSheets(id: string) {
+    let { data: feuillesDettes, error } = await this.supabase
+      .from('feuillesDettes')
+      .delete()
+      .match({ id });
     return feuillesDettes;
   }
 

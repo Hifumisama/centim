@@ -1,0 +1,70 @@
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="debtSheetEdit"
+  tabindex="-1"
+  aria-labelledby="modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="debtSheetForm">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div
+                class="input-group input-group-outline my-3"
+                [class.is-filled]="debtSheetForm.get('name')?.value"
+              >
+                <label for="name" class="form-label">Nom</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  formControlName="name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div
+                class="input-group input-group-outline my-3"
+                [class.is-filled]="debtSheetForm.get('name')?.value"
+              >
+                <label for="description" class="form-label">Description</label>
+                <input
+                  type="email"
+                  id="description"
+                  class="form-control"
+                  formControlName="description"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="editDebtSheet()"
+          data-bs-dismiss="modal"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -47,6 +47,7 @@ import { CreateUserPageComponent } from './pages/create-user-page/create-user-pa
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { DebtSheetPageComponent } from './pages/debt-sheet-page/debt-sheet-page.component';
 import { DebtListComponent } from './components/debt-list/debt-list.component';
+import { DebtSheetEditComponent } from './components/debt-sheet-edit/debt-sheet-edit.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -66,6 +67,7 @@ registerLocaleData(localeFr);
     ErrorPageComponent,
     DebtSheetPageComponent,
     DebtListComponent,
+    DebtSheetEditComponent,
   ],
   imports: [
     BrowserModule,

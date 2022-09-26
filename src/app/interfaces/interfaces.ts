@@ -1,7 +1,7 @@
 export interface DebtList {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   createdBy: string;
   createdAt: Date;
 }
