@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataSeries } from 'src/app/data/interfaces';
 import { DebtItem } from 'src/app/interfaces/interfaces';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Profile, SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { Profile, SupabaseService } from 'src/app/services/supabase.service';
 })
 export class MainPageComponent implements OnInit {
   constructor(
+    private readonly profileService: ProfileService,
     private readonly supabase: SupabaseService,
     private readonly route: ActivatedRoute
   ) {}
@@ -23,9 +25,9 @@ export class MainPageComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.sheetId = params.get('id') || '';
     });
-    await this.supabase.profile.then(
-      (profile) => (this.userProfile = profile.data)
-    );
+
+    this.userProfile = this.profileService.getProfile();
+
     this.sheetData = (await this.supabase.getDebts(this.sheetId)) as DebtItem[];
     console.log(this.sheetData);
   }

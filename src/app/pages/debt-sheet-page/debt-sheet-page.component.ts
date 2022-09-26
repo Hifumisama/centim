@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DebtListComponent } from 'src/app/components/debt-list/debt-list.component';
 import { DebtList } from 'src/app/interfaces/interfaces';
+import { DebtListService } from 'src/app/services/debtList/debt-list.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
@@ -11,9 +12,12 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 export class DebtSheetPageComponent implements OnInit {
   debtList: DebtList[] = [];
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly debtListService: DebtListService) {}
 
   async ngOnInit(): Promise<void> {
-    this.debtList = (await this.supabase.getDebtSheets()) as DebtList[];
+    this.debtListService.debtList$.subscribe((data) => {
+      this.debtList = data;
+    });
+    await this.debtListService.getDebtSheets();
   }
 }

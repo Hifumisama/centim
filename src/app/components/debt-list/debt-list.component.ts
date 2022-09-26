@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DebtList } from 'src/app/interfaces/interfaces';
+import { DebtListService } from 'src/app/services/debtList/debt-list.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 @Component({
   selector: 'app-debt-list',
@@ -13,7 +14,7 @@ export class DebtListComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly supabase: SupabaseService
+    private readonly debtListService: DebtListService
   ) {}
   ngOnInit(): void {}
 
@@ -28,7 +29,7 @@ export class DebtListComponent implements OnInit {
 
   async deleteDebtSheet(event: any, id: string) {
     event.stopPropagation();
-    await this.supabase.deleteDebtSheets(id).then(() => {
+    await this.debtListService.deleteDebtSheets(id).then(() => {
       const index = this.data.findIndex((x) => x.id === id);
       console.log('data supprimée :3');
     });

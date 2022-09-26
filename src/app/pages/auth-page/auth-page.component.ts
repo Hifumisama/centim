@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class AuthPageComponent {
 
   constructor(
     private readonly supabase: SupabaseService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly profileService: ProfileService
   ) {}
 
   async handleLogin(login: string, password: string) {
@@ -22,6 +24,7 @@ export class AuthPageComponent {
       console.log(signIn.error);
     } else {
       // redirect to mainPage
+      await this.profileService.fetchProfile();
       this.router.navigate(['/debtList']);
       console.log('login succesful');
     }

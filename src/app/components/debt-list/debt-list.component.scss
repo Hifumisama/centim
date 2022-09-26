@@ -1,3 +1,9 @@
 .tableRow {
   cursor:pointer;
 }
+
+.sticky-button {
+  position: sticky;
+  top: calc(100vh - 60px);
+  left: calc(100vw - 90px);
+}

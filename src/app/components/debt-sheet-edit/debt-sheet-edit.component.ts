@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DebtList } from 'src/app/interfaces/interfaces';
+import { DebtListService } from 'src/app/services/debtList/debt-list.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
@@ -17,7 +19,10 @@ export class DebtSheetEditComponent implements OnInit {
     description: new FormControl(''),
   });
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(
+    private readonly debtListService: DebtListService,
+    private readonly profileService: ProfileService
+  ) {}
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges) {
     if (changes['initialData'].isFirstChange()) {
@@ -29,15 +34,16 @@ export class DebtSheetEditComponent implements OnInit {
     this.debtSheetForm.updateValueAndValidity();
   }
 
-  async editDebtSheet() {
+  async upsertDebtSheet() {
     const feuilleDette = {
       id: this.initialData.id,
       name: this.debtSheetForm.value.name,
       description: this.debtSheetForm.value.description,
       createdAt: this.initialData.createdAt,
-      createdBy: this.initialData.createdBy,
+      createdBy:
+        this.initialData.createdBy || this.profileService.getProfile().username,
     };
-    await this.supabase.upsertDebtSheets(feuilleDette).then(() => {
+    await this.debtListService.upsertDebtSheets(feuilleDette).then(() => {
       console.log('data updatée :D !');
     });
   }

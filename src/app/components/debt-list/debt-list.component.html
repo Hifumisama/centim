@@ -92,8 +92,13 @@
       </div>
     </div>
   </div>
+  <button
+    type="button"
+    class="btn btn-primary sticky-button"
+    data-bs-toggle="modal"
+    data-bs-target="#debtSheetEdit"
+  >
+    <i class="material-icons">add</i>
+  </button>
 </div>
-<app-debt-sheet-edit
-  [title]="'test'"
-  [initialData]="debtSheetSelected"
-></app-debt-sheet-edit>
+<app-debt-sheet-edit [initialData]="debtSheetSelected"></app-debt-sheet-edit>

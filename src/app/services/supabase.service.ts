@@ -6,7 +6,6 @@ import {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
-import { DebtList } from '../interfaces/interfaces';
 
 export interface Profile {
   username: string;
@@ -17,7 +16,7 @@ export interface Profile {
   providedIn: 'root',
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  supabase: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(
@@ -34,36 +33,6 @@ export class SupabaseService {
     return this.supabase.auth.session();
   }
 
-  get profile() {
-    return this.supabase
-      .from('profiles')
-      .select(`username, avatar_url`)
-      .eq('id', this.user?.id)
-      .single();
-  }
-
-  // debtSheet manipulation :D
-  async getDebtSheets() {
-    let { data: feuillesDettes, error } = await this.supabase
-      .from('feuillesDettes')
-      .select();
-    return feuillesDettes;
-  }
-
-  async upsertDebtSheets(feuilleDette: DebtList) {
-    return this.supabase.from('profiles').upsert(feuilleDette, {
-      returning: 'minimal', // Don't return the value after inserting
-    });
-  }
-
-  async deleteDebtSheets(id: string) {
-    let { data: feuillesDettes, error } = await this.supabase
-      .from('feuillesDettes')
-      .delete()
-      .match({ id });
-    return feuillesDettes;
-  }
-
   async getDebts(sheetId: string) {
     let { data: dettes, error } = await this.supabase
       .from('dettes')
@@ -75,14 +44,7 @@ export class SupabaseService {
     return dettes;
   }
 
-  authChanges(
-    callback: (event: AuthChangeEvent, session: Session | null) => void
-  ) {
-    return this.supabase.auth.onAuthStateChange(callback);
-  }
-
   signIn(email: string, password: string) {
-    console.log(email, password);
     return this.supabase.auth.signIn({ email, password });
   }
 
@@ -94,23 +56,9 @@ export class SupabaseService {
     return this.supabase.auth.signOut();
   }
 
-  updateProfile(profile: Profile) {
-    const update = {
-      ...profile,
-      id: this.user?.id,
-      updated_at: new Date(),
-    };
-
-    return this.supabase.from('profiles').upsert(update, {
-      returning: 'minimal', // Don't return the value after inserting
-    });
-  }
-
-  downLoadImage(path: string) {
-    return this.supabase.storage.from('avatars').download(path);
-  }
-
-  uploadAvatar(filePath: string, file: File) {
-    return this.supabase.storage.from('avatars').upload(filePath, file);
+  authChanges(
+    callback: (event: AuthChangeEvent, session: Session | null) => void
+  ) {
+    return this.supabase.auth.onAuthStateChange(callback);
   }
 }

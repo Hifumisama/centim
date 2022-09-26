@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Profile, SupabaseService } from '../../services/supabase.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class CreateUserPageComponent implements OnInit {
   loading = false;
   constructor(
     private readonly supabase: SupabaseService,
+    private readonly profileService: ProfileService,
     private readonly router: Router
   ) {}
 
@@ -25,7 +27,7 @@ export class CreateUserPageComponent implements OnInit {
       const profile: Profile = {
         username,
       };
-      await this.supabase.updateProfile(profile);
+      await this.profileService.updateProfile(profile);
       this.router.navigate(['/login']);
     }
 
