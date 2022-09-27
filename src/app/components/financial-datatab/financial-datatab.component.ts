@@ -11,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { DataSeries } from 'src/app/data/interfaces';
 import { categories } from 'src/app/data/mockData';
 import { DebtItem } from 'src/app/interfaces/interfaces';
+import { DebtService } from 'src/app/services/debt/debt.service';
 import { FinancialFormComponent } from '../financial-form/financial-form.component';
 
 @Component({
@@ -29,62 +30,20 @@ import { FinancialFormComponent } from '../financial-form/financial-form.compone
   ],
 })
 export class FinancialDatatabComponent implements OnInit {
-  @Input() data: DebtItem[] = [];
-  @Output() deleteEntry = new EventEmitter<DebtItem>();
-  @Output() updateEntry = new EventEmitter();
-  clonedData: DebtItem[] = [];
+  @Input() debtData!: DebtItem[];
+  debtSelected!: DebtItem;
 
-  displayedColumns = ['transaction', 'amount', 'type', 'expand'];
-  expandedElement?: DebtItem | null;
+  constructor(private readonly debtService: DebtService) {}
 
-  constructor(
-    private messageService: MessageService,
-    public dialog: MatDialog
-  ) {}
-  get dropDownCategories() {
-    return categories.map((x) => x.name);
+  ngOnInit(): void {
+    console.log(this.debtData);
   }
 
-  ngOnInit(): void {}
-
-  openEditDialog(data: DebtItem): void {
-    this.dialog.open(FinancialFormComponent, {
-      data: {
-        item: data,
-      },
-    });
+  selectDebt(debtItem: DebtItem) {
+    this.debtSelected = debtItem;
   }
 
-  onRowEditInit(dataEdited: DebtItem) {
-    const id = this.data.findIndex((x) => x.id === dataEdited.id);
-    this.clonedData[id] = { ...dataEdited };
-  }
-
-  onRowEditSave(dataEdited: DebtItem) {
-    const id = this.data.findIndex((x) => x.id === dataEdited.id);
-    delete this.clonedData[id];
-
-    this.updateEntry.emit({ update: { data: this.data[id], id } });
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Entrée mise à jour',
-    });
-  }
-
-  onRowEditCancel(dataEdited: DebtItem, index: number) {
-    const id = this.data.findIndex((x) => x.id === dataEdited.id);
-    this.data[index] = this.clonedData[id];
-    delete this.clonedData[id];
-  }
-
-  onRowDelete(data: DebtItem) {
-    this.deleteEntry.emit(data);
-  }
-
-  getExpandElement(element: DebtItem) {
-    console.log(element);
-    this.expandedElement = element;
+  async deleteDebt(id: string) {
+    await this.debtService.deleteDebt(id);
   }
 }

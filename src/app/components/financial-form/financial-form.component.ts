@@ -1,70 +1,75 @@
 import {
   Component,
   EventEmitter,
-  Inject,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSeries } from 'src/app/data/interfaces';
-import { categories } from 'src/app/data/mockData';
-import * as uuid from 'uuid';
+import { Category, DebtItem } from 'src/app/interfaces/interfaces';
+import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { DebtService } from 'src/app/services/debt/debt.service';
 
 @Component({
   selector: 'app-financial-form',
   templateUrl: './financial-form.component.html',
   styleUrls: ['./financial-form.component.scss'],
 })
-export class FinancialFormComponent implements OnInit {
-  @Output() addNewEntry = new EventEmitter();
+export class FinancialFormComponent implements OnInit, OnChanges {
+  types!: Category[];
 
-  get dropDownCategories() {
-    return categories.map((x) => x.name);
-  }
+  @Input() feuilleDette!: string;
+  @Input() initialData!: DebtItem;
 
   financialForm: FormGroup = new FormGroup({
     transactionDate: new FormControl(''),
     debitor: new FormControl(''),
     creditor: new FormControl(''),
     amount: new FormControl(''),
-    category: new FormControl(''),
+    type: new FormControl(''),
     reason: new FormControl(''),
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { item: DataSeries },
-    public dialogRef: MatDialogRef<FinancialFormComponent>
+    private readonly categoryService: CategoriesService,
+    private readonly debtService: DebtService
   ) {}
 
-  ngOnInit(): void {
-    this.initForm();
+  async ngOnInit(): Promise<void> {
+    this.categoryService.Category$.subscribe((categories) => {
+      this.types = categories;
+    });
+    await this.categoryService.fetchCategory();
   }
 
-  initForm(): void {
-    if (this.data.item) {
-      const { transactionDate, debitor, creditor, amount, category, reason } =
-        this.data.item;
-      this.financialForm.setValue({
-        transactionDate,
-        debitor,
-        creditor,
-        amount,
-        category,
-        reason,
-      });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['initialData'].isFirstChange()) {
+      this.initialData = changes['initialData'].currentValue;
     }
+    this.financialForm.patchValue(this.initialData);
+    if (this.initialData.transactionDate) {
+      this.financialForm
+        .get('transactionDate')
+        ?.patchValue(
+          this.initialData.transactionDate.toISOString().split('T')[0]
+        );
+    }
+    this.financialForm.updateValueAndValidity();
   }
 
-  submitForm() {
+  async submitForm() {
     if (this.financialForm?.valid) {
-      const result: DataSeries = {
-        id: uuid.v4(),
+      const dette: DebtItem = {
+        ...this.initialData,
         ...this.financialForm.value,
+        transactionDate:
+          new Date(this.financialForm.value.transactionDate) ||
+          this.initialData.transactionDate,
+        feuillesDettes: this.feuilleDette,
       };
-      this.addNewEntry.emit(result);
-      this.dialogRef.close();
+      await this.debtService.upsertDebt(dette);
     }
   }
 }

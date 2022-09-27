@@ -48,9 +48,6 @@ export class DebtListService {
   }
 
   async createDebtSheets(feuilleDette: DebtList) {
-    const dette = {
-      ...feuilleDette,
-    };
     await this.supabaseService.supabase
       .from('feuillesDettes')
       .upsert(feuilleDette);

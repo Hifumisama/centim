@@ -12,6 +12,15 @@ export interface DebtItem {
   creditor?: string;
   transactionDate: Date;
   amount: number;
-  category: string;
+  type: string;
   reason?: string;
+  feuillesDettes: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  created_at?: Date;
+  backgroundColor?: string;
 }

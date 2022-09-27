@@ -1,106 +1,127 @@
-<form
-  class="example-form"
-  [formGroup]="financialForm"
-  fxLayout="column wrap"
-  fxLayoutGap="5px"
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="debtEdit"
+  tabindex="-1"
+  aria-labelledby="modal"
+  aria-hidden="true"
 >
-  <div>
-    <span fxFlex="50px" fxFlexAlign="center" style="text-align: center" fx
-      >Le :</span
-    >
-    <mat-form-field fxFlex="100" class="example-full-width formItem">
-      <mat-label>Date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        required
-        formControlName="transactionDate"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi #picker></mat-datepicker>
-      <mat-error
-        *ngIf="financialForm.controls['transactionDate'].hasError('required')"
-      >
-        La date est requise
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="example-full-width formItem" fxFlex="50">
-      <mat-label>Débiteur</mat-label>
-      <input matInput required formControlName="debitor" />
-      <mat-error *ngIf="financialForm.controls['debitor'].hasError('required')">
-        Le nom du débiteur est requis
-      </mat-error>
-    </mat-form-field>
-    <span fxFlex="50px" fxFlexAlign="center" style="text-align: center"
-      >doit à</span
-    >
-    <mat-form-field class="example-full-width formItem" fxFlex="50">
-      <mat-label>Créditeur</mat-label>
-      <input matInput required formControlName="creditor" />
-      <mat-error
-        *ngIf="financialForm.controls['creditor'].hasError('required')"
-      >
-        Le nom du créditeur est requis
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div>
-    <span fxFlex="100px" fxFlexAlign="center" style="text-align: center"
-      >La somme de</span
-    >
-    <mat-form-field
-      class="example-full-width formItem"
-      fxFlex="50"
-      fxFlex.sm="100"
-    >
-      <mat-label>Montant</mat-label>
-      <input type="number" matInput required formControlName="amount" />
-      <mat-error *ngIf="financialForm.controls['amount'].hasError('required')">
-        Le montant est requis
-      </mat-error>
-      <span matSuffix>€</span>
-    </mat-form-field>
-    <span
-      fxFlex="50px"
-      fxFlexAlign="center"
-      style="text-align: center"
-      fxFlex.sm="100"
-      >pour</span
-    >
-    <mat-form-field
-      class="example-full-width formItem"
-      fxFlex="40"
-      fxFlex.xs="100"
-    >
-      <mat-label>Catégorie</mat-label>
-      <mat-select required formControlName="category">
-        <mat-option
-          *ngFor="let category of dropDownCategories"
-          [value]="category"
-        >
-          {{ category }}
-        </mat-option>
-      </mat-select>
-      <mat-error
-        *ngIf="financialForm.controls['category'].hasError('required')"
-      >
-        Le choix de la catégorie est requis
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <mat-form-field class="example-full-width formItem">
-    <mat-label>Détails</mat-label>
-    <input matInput formControlName="reason" />
-  </mat-form-field>
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Dette</h2>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="financialForm">
+          <div class="row">
+            <div class="col-12">
+              <!-- TransactionDate Ajout du champ Date :D -->
+              <div class="input-group input-group-static my-3">
+                <label>Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="transactionDate"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div
+                class="input-group input-group-dynamic my-3"
+                [class.is-filled]="financialForm.get('creditor')?.value"
+              >
+                <label for="creditor" class="form-label">Créditeur</label>
+                <input
+                  type="text"
+                  id="creditor"
+                  class="form-control"
+                  formControlName="creditor"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div
+                class="input-group input-group-dynamic my-3"
+                [class.is-filled]="financialForm.get('debitor')?.value"
+              >
+                <label for="debitor" class="form-label">Débiteur</label>
+                <input
+                  type="text"
+                  id="debitor"
+                  class="form-control"
+                  formControlName="debitor"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div
+                class="input-group input-group-dynamic my-3"
+                [class.is-filled]="financialForm.get('amount')?.value"
+              >
+                <label for="amount" class="form-label">Montant</label>
+                <input
+                  type="number"
+                  id="amount"
+                  class="form-control"
+                  formControlName="amount"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group input-group-static my-3">
+                <label for="type" class="ms-0">Catégorie</label>
+                <select class="form-control" id="type" formControlName="type">
+                  <ng-container *ngFor="let type of types">
+                    <option>{{ type.name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div
+                class="input-group input-group-dynamic my-3"
+                [class.is-filled]="financialForm.get('reason')?.value"
+              >
+                <label for="description" class="form-label">Description</label>
+                <input
+                  type="text"
+                  id="reason"
+                  class="form-control"
+                  formControlName="reason"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="submitForm()"
-    fxFlexAlign="center"
-  >
-    Valider
-  </button>
-</form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="submitForm()"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

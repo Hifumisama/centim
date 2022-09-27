@@ -1,118 +1,110 @@
-<mat-card>
-  <mat-card-title> Tableau de suivi des finances </mat-card-title>
-  <mat-card-content>
-    <table
-      mat-table
-      [dataSource]="data"
-      class="mat-elevation-z8"
-      multiTemplateDataRows
-    >
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="transactionDate">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.transactionDate | date }}
-        </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="transaction">
-        <th mat-header-cell *matHeaderCellDef>Transaction</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.debitor }} -> {{ element.creditor }}
-        </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Montant</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.amount | currency: "EUR":"symbol":"1.2":"fr" }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Catégorie</th>
-        <td mat-cell *matCellDef="let element">{{ element.type }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-          &nbsp;
-        </th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            mat-icon-button
-            aria-label="expand row"
-            (click)="getExpandElement(element)"
-          >
-            <mat-icon *ngIf="expandedElement !== element"
-              >keyboard_arrow_down</mat-icon
+<div class="main-content position-relative max-height-vh-100 border-radius-lg">
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div
+              class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
             >
-            <mat-icon *ngIf="expandedElement === element"
-              >keyboard_arrow_up</mat-icon
-            >
-          </button>
-        </td>
-      </ng-container>
-
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-      <ng-container matColumnDef="expandedDetail">
-        <td
-          mat-cell
-          *matCellDef="let element"
-          [attr.colspan]="displayedColumns.length"
-        >
-          <div
-            class="example-element-detail"
-            [@detailExpand]="
-              element === expandedElement ? 'expanded' : 'collapsed'
-            "
-          >
-            <div class="container">
-              <div class="details">
-                <span> Date: {{ element.transactionDate | date }} </span>
-                <span> Description: {{ element.reason }} </span>
-              </div>
-              <div class="actions">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  aria-label="Add"
-                  (click)="openEditDialog(element)"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="warn"
-                  aria-label="Delete"
-                  (click)="onRowDelete(element)"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
+              <p class="text-white text-capitalize ps-3">Transactions</p>
             </div>
           </div>
-        </td>
-      </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        *matRowDef="let element; columns: displayedColumns"
-        class="example-element-row"
-        [class.example-expanded-row]="expandedElement === element"
-        (click)="getExpandElement(element)"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: ['expandedDetail']"
-        class="example-detail-row"
-      ></tr>
-    </table>
-  </mat-card-content>
-</mat-card>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                    >
+                      Transaction
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Le
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Montant
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Catégorie
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Détails
+                    </th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let debtItem of debtData">
+                    <tr class="bg-gray-100 tableRow">
+                      <td class="align-middle text-center text-sm">
+                        <p class="text-xs text-secondary mb-0">
+                          {{ debtItem.debitor }} => {{ debtItem.creditor }}
+                        </p>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <p class="text-xs text-secondary mb-0">
+                          {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
+                        </p>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <p class="text-xs text-secondary mb-0">
+                          {{ debtItem.amount | currency: "EUR" }}
+                        </p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs">
+                          {{ debtItem.type }}</span
+                        >
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs">
+                          {{ debtItem.reason }}</span
+                        >
+                      </td>
+                      <td class="align-middle">
+                        <a
+                          href="#debtSheetEdit"
+                          data-bs-toggle="modal"
+                          data-bs-target="#debtEdit"
+                          (click)="selectDebt(debtItem)"
+                        >
+                          <i class="material-icons">edit</i>
+                        </a>
+                        <i
+                          class="material-icons"
+                          (click)="deleteDebt(debtItem.id)"
+                          >close</i
+                        >
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    type="button"
+    class="btn btn-primary sticky-button"
+    data-bs-toggle="modal"
+    data-bs-target="#debtEdit"
+  >
+    <span class="btn-inner--icon"><i class="material-icons">add</i></span>
+    <span class="btn-inner--text">Ajouter une dette</span>
+  </button>
+</div>
+<app-financial-form [initialData]="debtSelected"></app-financial-form>

@@ -33,17 +33,6 @@ export class SupabaseService {
     return this.supabase.auth.session();
   }
 
-  async getDebts(sheetId: string) {
-    let { data: dettes, error } = await this.supabase
-      .from('dettes')
-      .select()
-      .eq('feuillesDettes', sheetId);
-    if (dettes && dettes.length > 0) {
-      dettes.map((x) => (x.transactionDate = new Date(x.transactionDate)));
-    }
-    return dettes;
-  }
-
   signIn(email: string, password: string) {
     return this.supabase.auth.signIn({ email, password });
   }
