@@ -20,7 +20,10 @@
       <div class="modal-body">
         <form [formGroup]="financialForm">
           <div class="row">
-            <div class="col-12">
+            <div class="col-2 align-self-center text-center">
+              <span>Le :</span>
+            </div>
+            <div class="col-10">
               <!-- TransactionDate Ajout du champ Date :D -->
               <div class="input-group input-group-static my-3">
                 <label>Date</label>
@@ -33,7 +36,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 col-sm-12">
+            <div class="col-4">
               <div
                 class="input-group input-group-dynamic my-3"
                 [class.is-filled]="financialForm.get('creditor')?.value"
@@ -47,7 +50,11 @@
                 />
               </div>
             </div>
-            <div class="col-md-6 col-sm-12">
+            <div class="col-4 align-self-center text-center">
+              <span>doit à</span>
+            </div>
+
+            <div class="col-4">
               <div
                 class="input-group input-group-dynamic my-3"
                 [class.is-filled]="financialForm.get('debitor')?.value"
