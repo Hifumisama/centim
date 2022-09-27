@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Category, DebtItem } from 'src/app/interfaces/interfaces';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { DebtService } from 'src/app/services/debt/debt.service';
+import { LocalService } from 'src/app/services/local/local.service';
 
 @Component({
   selector: 'app-financial-form',
@@ -20,7 +21,6 @@ import { DebtService } from 'src/app/services/debt/debt.service';
 export class FinancialFormComponent implements OnInit, OnChanges {
   types!: Category[];
 
-  @Input() feuilleDette!: string;
   @Input() initialData!: DebtItem;
 
   financialForm: FormGroup = new FormGroup({
@@ -34,7 +34,8 @@ export class FinancialFormComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly categoryService: CategoriesService,
-    private readonly debtService: DebtService
+    private readonly debtService: DebtService,
+    private readonly localService: LocalService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -67,7 +68,7 @@ export class FinancialFormComponent implements OnInit, OnChanges {
         transactionDate:
           new Date(this.financialForm.value.transactionDate) ||
           this.initialData.transactionDate,
-        feuillesDettes: this.feuilleDette,
+        feuillesDettes: this.localService.getSheetSelected(),
       };
       await this.debtService.upsertDebt(dette);
     }
