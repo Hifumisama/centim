@@ -1,18 +1,12 @@
-<mat-card>
-  <mat-card-title>Résumé de dette</mat-card-title>
-  <mat-card-subtitle>Qui doit à qui ?</mat-card-subtitle>
-  <mat-card-content>
-    <p *ngIf="this.debt < 0">
-      {{ creditorSelected }} doit à {{ debitorSelected }} la somme de
-      {{ debt | positive }} €.
-    </p>
-    <p *ngIf="this.debt > 0">
-      {{ debitorSelected }} doit à {{ creditorSelected }} la somme de
-      {{ debt | positive }} €.
-    </p>
+<p *ngIf="this.debt < 0">
+  {{ creditorSelected }} doit à {{ debitorSelected }} la somme de
+  {{ debt | positive }} €.
+</p>
+<p *ngIf="this.debt > 0">
+  {{ debitorSelected }} doit à {{ creditorSelected }} la somme de
+  {{ debt | positive }} €.
+</p>
 
-    <p *ngIf="this.debt === 0">
-      La dette est à l'équilibre, personne ne doit rien à personne :) !
-    </p>
-  </mat-card-content>
-</mat-card>
+<p *ngIf="this.debt === 0">
+  La dette est à l'équilibre, personne ne doit rien à personne :) !
+</p>

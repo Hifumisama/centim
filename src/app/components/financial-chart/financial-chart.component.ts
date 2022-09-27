@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DataSeries } from 'src/app/data/interfaces';
 import { DebtItem } from 'src/app/interfaces/interfaces';
 
 @Component({

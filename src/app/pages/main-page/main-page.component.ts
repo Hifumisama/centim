@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataSeries } from 'src/app/data/interfaces';
 import { DebtItem } from 'src/app/interfaces/interfaces';
 import { DebtService } from 'src/app/services/debt/debt.service';
-import { ProfileService } from 'src/app/services/profile/profile.service';
-import { Profile, SupabaseService } from 'src/app/services/supabase.service';
+import { Profile } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-main-page',
@@ -13,7 +11,6 @@ import { Profile, SupabaseService } from 'src/app/services/supabase.service';
 })
 export class MainPageComponent implements OnInit {
   constructor(
-    private readonly profileService: ProfileService,
     private readonly debtService: DebtService,
     private readonly route: ActivatedRoute
   ) {}
@@ -31,7 +28,5 @@ export class MainPageComponent implements OnInit {
       this.sheetId = params.get('id') || '';
       await this.debtService.fetchDebts(this.sheetId);
     });
-
-    this.userProfile = this.profileService.getProfile();
   }
 }
