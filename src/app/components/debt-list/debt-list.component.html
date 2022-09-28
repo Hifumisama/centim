@@ -15,7 +15,9 @@
 
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0">
+              <table
+                class="table table-striped align-items-center mb-0 d-none d-md-table"
+              >
                 <thead>
                   <tr>
                     <th
@@ -67,7 +69,7 @@
                           {{ debtSheet.createdAt | date: "dd/MM/yyyy" }}</span
                         >
                       </td>
-                      <td class="align-middle">
+                      <td class="align-middle text-center">
                         <a
                           href="#debtSheetEdit"
                           data-bs-toggle="modal"
@@ -81,6 +83,77 @@
                           (click)="deleteDebtSheet($event, debtSheet.id)"
                           >close</i
                         >
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table
+                class="table table-striped align-items-center mb-0 d-md-none"
+              >
+                <tbody>
+                  <ng-container *ngFor="let debtSheet of data">
+                    <tr
+                      class="bg-gray-100 tableRow d-flex flex-column mb-2"
+                      (click)="goToSheet($event, debtSheet.id)"
+                    >
+                      <td class="align-middle text-center text-sm">
+                        <div class="row d-flex flex-row">
+                          <p class="text-xs text-secondary mb-0 col-6">Nom :</p>
+                          <p class="text-xs text-secondary mb-0 col-6">
+                            {{ debtSheet.name }}
+                          </p>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <div class="row d-flex flex-row">
+                          <p class="text-xs text-secondary mb-0 col-6">
+                            Description :
+                          </p>
+                          <p
+                            class="text-xs text-secondary mb-0 col-6 flex-wrap"
+                          >
+                            {{ debtSheet.description }}
+                          </p>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <div class="row d-flex flex-row">
+                          <p class="text-xs text-secondary mb-0 col-6">Par :</p>
+                          <p class="text-xs text-secondary mb-0 col-6">
+                            {{ debtSheet.createdBy }}
+                          </p>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="row d-flex flex-row">
+                          <p class="text-xs text-secondary mb-0 col-6">Le :</p>
+                          <span class="text-secondary text-xs col-6">
+                            {{ debtSheet.createdAt | date: "dd/MM/yyyy" }}</span
+                          >
+                        </div>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="row d-flex flex-row">
+                          <div class="col-6">
+                            <p class="text-xs text-secondary">Actions:</p>
+                          </div>
+                          <div class="col-6">
+                            <a
+                              href="#debtSheetEdit"
+                              data-bs-toggle="modal"
+                              data-bs-target="#debtSheetEdit"
+                              (click)="selectDebtSheet($event, debtSheet)"
+                            >
+                              <i class="material-icons">edit</i>
+                            </a>
+                            <i
+                              class="material-icons"
+                              (click)="deleteDebtSheet($event, debtSheet.id)"
+                              >close</i
+                            >
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </ng-container>
