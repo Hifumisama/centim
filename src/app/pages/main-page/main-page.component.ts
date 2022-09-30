@@ -15,9 +15,12 @@ export class MainPageComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {}
 
-  sheetData: DebtItem[] = [];
+  sheetData!: DebtItem[];
   userProfile!: Profile;
   sheetId!: string;
+
+  creditorSelected!: string;
+  debitorSelected!: string;
 
   async ngOnInit(): Promise<void> {
     this.debtService.DebtItem$.subscribe((debts) => {
@@ -27,6 +30,12 @@ export class MainPageComponent implements OnInit {
     this.route.paramMap.subscribe(async (params) => {
       this.sheetId = params.get('id') || '';
       await this.debtService.fetchDebts(this.sheetId);
+      this.preselectDefaultCreditorDebitor();
     });
+  }
+
+  preselectDefaultCreditorDebitor() {
+    this.creditorSelected = this.sheetData[0].creditor || '';
+    this.debitorSelected = this.sheetData[0].debitor;
   }
 }

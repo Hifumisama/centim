@@ -1,1 +1,8 @@
 <app-financial-datatab [debtData]="sheetData"></app-financial-datatab>
+<ng-container *ngIf="sheetData.length > 0">
+  <app-financial-chart
+    [data]="sheetData"
+    [creditorSelected]="creditorSelected"
+    [debitorSelected]="debitorSelected"
+  ></app-financial-chart>
+</ng-container>
