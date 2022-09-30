@@ -22,6 +22,7 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { DebtSheetPageComponent } from './pages/debt-sheet-page/debt-sheet-page.component';
 import { DebtListComponent } from './components/debt-list/debt-list.component';
 import { DebtSheetEditComponent } from './components/debt-sheet-edit/debt-sheet-edit.component';
+import { HeroComponent } from './components/hero/hero.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -41,6 +42,7 @@ registerLocaleData(localeFr);
     DebtSheetPageComponent,
     DebtListComponent,
     DebtSheetEditComponent,
+    HeroComponent,
   ],
   imports: [
     BrowserModule,
