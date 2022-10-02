@@ -8,7 +8,7 @@ import { DebtService } from 'src/app/services/debt/debt.service';
 })
 export class FinancialDatatabComponent implements OnInit {
   @Input() debtData!: DebtItem[];
-  debtSelected!: DebtItem;
+  debtSelected?: DebtItem;
 
   constructor(private readonly debtService: DebtService) {}
 
@@ -16,6 +16,10 @@ export class FinancialDatatabComponent implements OnInit {
 
   selectDebt(debtItem: DebtItem) {
     this.debtSelected = debtItem;
+  }
+
+  async addDebt() {
+    this.debtSelected = undefined;
   }
 
   async deleteDebt(id: string) {

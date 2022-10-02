@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { DebtList } from 'src/app/interfaces/interfaces';
 import { DebtListService } from 'src/app/services/debtList/debt-list.service';
 import { LocalService } from 'src/app/services/local/local.service';
-import { SupabaseService } from 'src/app/services/supabase.service';
 @Component({
   selector: 'app-debt-list',
   templateUrl: './debt-list.component.html',
@@ -34,7 +33,6 @@ export class DebtListComponent implements OnInit {
     event.stopPropagation();
     await this.debtListService.deleteDebtSheets(id).then(() => {
       const index = this.data.findIndex((x) => x.id === id);
-      console.log('data supprimée :3');
     });
   }
 }

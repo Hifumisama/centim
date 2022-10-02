@@ -191,7 +191,7 @@
     data-bs-target="#debtEdit"
   >
     <span class="btn-inner--icon"><i class="material-icons">add</i></span>
-    <span class="btn-inner--text">Ajouter une dette</span>
+    <span class="btn-inner--text" (click)="addDebt()">Ajouter une dette</span>
   </button>
 </div>
 <app-financial-form [initialData]="debtSelected"></app-financial-form>

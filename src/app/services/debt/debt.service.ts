@@ -57,9 +57,9 @@ export class DebtService {
       .upsert(dette);
     if (editedDette) {
       if (!dette.id) {
-        this.addDebt(editedDette[0] as DebtItem);
+        this.addDebt(dette as DebtItem);
       } else {
-        this.updateDebt(editedDette[0] as DebtItem);
+        this.updateDebt(dette as DebtItem);
       }
     }
   }

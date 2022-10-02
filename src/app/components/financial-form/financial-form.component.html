@@ -35,25 +35,8 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-4">
-              <div
-                class="input-group input-group-dynamic my-3"
-                [class.is-filled]="financialForm.get('creditor')?.value"
-              >
-                <label for="creditor" class="form-label">Créditeur</label>
-                <input
-                  type="text"
-                  id="creditor"
-                  class="form-control"
-                  formControlName="creditor"
-                />
-              </div>
-            </div>
-            <div class="col-4 align-self-center text-center">
-              <span>doit à</span>
-            </div>
 
+          <div class="row">
             <div class="col-4">
               <div
                 class="input-group input-group-dynamic my-3"
@@ -65,6 +48,25 @@
                   id="debitor"
                   class="form-control"
                   formControlName="debitor"
+                  [attr.disabled]="initialData && initialData.id"
+                />
+              </div>
+            </div>
+            <div class="col-4 align-self-center text-center">
+              <span>doit à</span>
+            </div>
+            <div class="col-4">
+              <div
+                class="input-group input-group-dynamic my-3"
+                [class.is-filled]="financialForm.get('creditor')?.value"
+              >
+                <label for="creditor" class="form-label">Créditeur</label>
+                <input
+                  type="text"
+                  id="creditor"
+                  class="form-control"
+                  formControlName="creditor"
+                  [attr.disabled]="initialData && initialData.id"
                 />
               </div>
             </div>

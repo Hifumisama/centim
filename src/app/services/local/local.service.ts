@@ -9,7 +9,6 @@ export class LocalService {
   readonly sheetSelected$ = this._localSheetSelected.asObservable();
 
   constructor() {}
-
   getSheetSelected(): string {
     return this._localSheetSelected.getValue();
   }

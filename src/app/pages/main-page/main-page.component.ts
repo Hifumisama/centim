@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DebtItem } from 'src/app/interfaces/interfaces';
 import { DebtService } from 'src/app/services/debt/debt.service';
+import { LocalService } from 'src/app/services/local/local.service';
 import { Profile } from 'src/app/services/supabase.service';
 
 @Component({
@@ -12,6 +13,7 @@ import { Profile } from 'src/app/services/supabase.service';
 export class MainPageComponent implements OnInit {
   constructor(
     private readonly debtService: DebtService,
+    private readonly localService: LocalService,
     private readonly route: ActivatedRoute
   ) {}
 
@@ -26,6 +28,7 @@ export class MainPageComponent implements OnInit {
 
     this.route.paramMap.subscribe(async (params) => {
       this.sheetId = params.get('id') || '';
+      this.localService.setSheetSelected(this.sheetId);
       await this.debtService.fetchDebts(this.sheetId);
     });
   }

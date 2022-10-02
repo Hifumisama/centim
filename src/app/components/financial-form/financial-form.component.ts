@@ -1,14 +1,13 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Category, DebtItem } from 'src/app/interfaces/interfaces';
+import { Subscription } from 'rxjs';
+import { Category, DebtItem, DebtList } from 'src/app/interfaces/interfaces';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { DebtService } from 'src/app/services/debt/debt.service';
 import { LocalService } from 'src/app/services/local/local.service';
@@ -21,7 +20,12 @@ import { LocalService } from 'src/app/services/local/local.service';
 export class FinancialFormComponent implements OnInit, OnChanges {
   types!: Category[];
 
-  @Input() initialData!: DebtItem;
+  @Input() initialData?: DebtItem;
+
+  categories$!: Subscription;
+  sheetSelected$!: Subscription;
+
+  sheetSelectedId!: string;
 
   financialForm: FormGroup = new FormGroup({
     transactionDate: new FormControl(''),
@@ -39,25 +43,39 @@ export class FinancialFormComponent implements OnInit, OnChanges {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.categoryService.Category$.subscribe((categories) => {
-      this.types = categories;
-    });
+    this.categories$ = this.categoryService.Category$.subscribe(
+      (categories) => {
+        this.types = categories;
+      }
+    );
+    this.sheetSelected$ = this.localService.sheetSelected$.subscribe(
+      (sheetSelected) => {
+        this.sheetSelectedId = sheetSelected;
+      }
+    );
     await this.categoryService.fetchCategory();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['initialData'].isFirstChange()) {
-      this.initialData = changes['initialData'].currentValue;
+    this.initialData = changes['initialData'].currentValue;
+
+    if (this.initialData) {
+      this.financialForm.patchValue(this.initialData);
+      if (this.initialData.transactionDate) {
+        this.financialForm
+          .get('transactionDate')
+          ?.patchValue(this.getStringDate(this.initialData.transactionDate));
+      }
+      this.financialForm.updateValueAndValidity();
+    } else {
+      this.financialForm.reset();
     }
-    this.financialForm.patchValue(this.initialData);
-    if (this.initialData.transactionDate) {
-      this.financialForm
-        .get('transactionDate')
-        ?.patchValue(
-          this.initialData.transactionDate.toISOString().split('T')[0]
-        );
-    }
-    this.financialForm.updateValueAndValidity();
+  }
+
+  getStringDate(date: Date) {
+    const dayOftheMonth =
+      date.getDate() >= 10 ? date.getDate() : `0${date.getDate()}`;
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${dayOftheMonth}`;
   }
 
   async submitForm() {
@@ -67,10 +85,17 @@ export class FinancialFormComponent implements OnInit, OnChanges {
         ...this.financialForm.value,
         transactionDate:
           new Date(this.financialForm.value.transactionDate) ||
-          this.initialData.transactionDate,
-        feuillesDettes: this.localService.getSheetSelected(),
+          this.initialData?.transactionDate,
+        feuillesDettes: this.sheetSelectedId,
       };
+      console.log(dette);
       await this.debtService.upsertDebt(dette);
+      this.financialForm.reset();
     }
+  }
+
+  ngOnDestroy() {
+    this.categories$.unsubscribe();
+    this.sheetSelected$.unsubscribe();
   }
 }
