@@ -17,15 +17,14 @@ export class MainPageComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {}
 
-  sheetData: DebtItem[] = [];
+  sheetData!: DebtItem[];
   userProfile!: Profile;
   sheetId!: string;
 
-  async ngOnInit(): Promise<void> {
-    this.debtService.DebtItem$.subscribe((debts) => {
-      this.sheetData = debts;
-    });
+  creditorSelected!: string;
+  debitorSelected!: string;
 
+  async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(async (params) => {
       this.sheetId = params.get('id') || '';
       this.localService.setSheetSelected(this.sheetId);

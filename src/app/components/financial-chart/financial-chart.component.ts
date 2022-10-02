@@ -1,65 +1,242 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { DebtItem } from 'src/app/interfaces/interfaces';
+import {
+  Chart,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip,
+  SubTitle,
+} from 'chart.js';
+import { DebtService } from 'src/app/services/debt/debt.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-financial-chart',
   templateUrl: './financial-chart.component.html',
   styleUrls: ['./financial-chart.component.scss'],
 })
-export class FinancialChartComponent implements OnInit {
-  @Input() data: DebtItem[] = [];
-  @Input() debitorSelected = '';
-  @Input() creditorSelected = '';
-  basicData = {};
+export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
+  data!: DebtItem[];
+  debitorSelected = '';
+  creditorSelected = '';
+  creditorLastExpanse: any;
+  debitorLastExpanse: any;
+  chart!: Chart;
+  subscription!: Subscription;
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  ngOnChanges(): void {
-    this.basicData = {
-      labels: this.generateLabels(),
-      datasets: [
-        {
-          label: `Dépenses de ${this.creditorSelected}`,
-          data: this.generateValues(this.creditorSelected),
-          borderColor: '#42A5F5',
-          tension: 0.4,
-        },
-        {
-          label: `Dépenses de ${this.debitorSelected}`,
-          data: this.generateValues(this.debitorSelected),
-          borderColor: '#42FEF5',
-          tension: 0.4,
-        },
-      ],
-    };
+  constructor(private readonly debtService: DebtService) {
+    Chart.register(
+      ArcElement,
+      LineElement,
+      BarElement,
+      PointElement,
+      BarController,
+      BubbleController,
+      DoughnutController,
+      LineController,
+      PieController,
+      PolarAreaController,
+      RadarController,
+      ScatterController,
+      CategoryScale,
+      LinearScale,
+      LogarithmicScale,
+      RadialLinearScale,
+      TimeScale,
+      TimeSeriesScale,
+      Decimation,
+      Filler,
+      Legend,
+      Title,
+      Tooltip,
+      SubTitle
+    );
   }
+
+  ngOnInit(): void {
+    this.subscription = this.debtService.DebtItem$.subscribe((debts) => {
+      this.data = debts;
+      if (debts.length > 0) {
+        this.preselectDefaultCreditorDebitor();
+        this.createChart();
+        this.debitorLastExpanse = this.getLastExpanse(this.debitorSelected);
+        this.creditorLastExpanse = this.getLastExpanse(this.creditorSelected);
+      }
+    });
+  }
+
+  ngOnChanges(): void {}
 
   generateLabels(): string[] {
     return this.data
-      .sort((a, b) => a.transactionDate.getDate() - b.transactionDate.getDate())
-      .map((x) => x.transactionDate.toDateString());
+      .sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime())
+      .map(
+        (x) =>
+          `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
+      );
+  }
+
+  getLastExpanse(user: string) {
+    const filter = this.data
+      .filter((x) => x.debitor === user)
+      .sort(
+        (a, b) => a.transactionDate.getTime() - b.transactionDate.getTime()
+      );
+    return {
+      user,
+      amount: filter[filter.length - 1].amount,
+      date: filter[filter.length - 1].transactionDate,
+    };
   }
 
   generateValues(user: string): any[] {
     const userValues = this.data.sort(
-      (a, b) => a.transactionDate.getDate() - b.transactionDate.getDate()
+      (a, b) => a.transactionDate.getTime() - b.transactionDate.getTime()
     );
-    return userValues.reduce(
-      (prevValue: { x: string; y: number | null }[], currentValue, index) => {
-        const oldValue = prevValue[index - 1]?.y || prevValue[index]?.y || 0;
-        const result = {
-          x: currentValue.transactionDate.toDateString(),
-          y:
-            currentValue.creditor === user
-              ? currentValue.amount + (prevValue[index - 1]?.y || 0)
-              : oldValue,
-        };
+    const result = userValues.reduce(
+      (prevValue: number[], currentValue, index) => {
+        const oldValue = prevValue[index - 1] || prevValue[index] || 0;
+        const result =
+          currentValue.debitor === user
+            ? currentValue.amount + (prevValue[index - 1] || 0)
+            : oldValue;
         prevValue.push(result);
         return prevValue;
       },
       []
     );
+
+    return result;
+  }
+
+  generateDataSets(): any[] {
+    const debitor = {
+      label: `Dépenses de ${this.debitorSelected}`,
+      tension: 0,
+      pointRadius: 5,
+      pointBackgroundColor: 'rgba(255, 255, 255, .8)',
+      pointBorderColor: 'transparent',
+      borderColor: 'rgba(255, 255, 255, .8)',
+      borderWidth: 4,
+      backgroundColor: 'transparent',
+      fill: true,
+      data: this.generateValues(this.debitorSelected),
+    };
+
+    if (this.creditorSelected) {
+      const creditor = {
+        label: `Dépenses de ${this.creditorSelected}`,
+        tension: 0,
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(255, 255, 255, .8)',
+        pointBorderColor: 'transparent',
+        borderColor: 'rgba(255, 255, 255, .8)',
+        borderWidth: 4,
+        backgroundColor: 'transparent',
+        fill: true,
+        data: this.generateValues(this.creditorSelected),
+      };
+      return [debitor, creditor];
+    }
+
+    return [debitor];
+  }
+
+  createChart() {
+    if (this.chart) this.chart.destroy();
+    this.chart = new Chart('financialChart', {
+      type: 'line',
+      data: {
+        labels: this.generateLabels(),
+        datasets: this.generateDataSets(),
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)',
+            },
+            ticks: {
+              display: true,
+              color: '#f8f9fa',
+              padding: 10,
+              font: {
+                size: 14,
+                weight: '300',
+                family: 'Roboto',
+                style: 'normal',
+                lineHeight: 2,
+              },
+            },
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5],
+            },
+            ticks: {
+              display: true,
+              color: '#f8f9fa',
+              padding: 10,
+              font: {
+                size: 14,
+                weight: '300',
+                family: 'Roboto',
+                style: 'normal',
+                lineHeight: 2,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  preselectDefaultCreditorDebitor() {
+    this.creditorSelected = this.data[0].creditor || '';
+    this.debitorSelected = this.data[0].debitor;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

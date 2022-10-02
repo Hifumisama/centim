@@ -1,1 +1,12 @@
-<app-financial-datatab [debtData]="sheetData"></app-financial-datatab>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+      <app-financial-chart></app-financial-chart>
+    </div>
+    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+      <app-debt-chart></app-debt-chart>
+    </div>
+  </div>
+</div>
+
+<app-financial-datatab></app-financial-datatab>
