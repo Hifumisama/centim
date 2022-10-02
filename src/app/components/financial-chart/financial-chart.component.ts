@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { DebtItem } from 'src/app/interfaces/interfaces';
 import {
   Chart,
@@ -27,21 +27,24 @@ import {
   Tooltip,
   SubTitle,
 } from 'chart.js';
+import { DebtService } from 'src/app/services/debt/debt.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-financial-chart',
   templateUrl: './financial-chart.component.html',
   styleUrls: ['./financial-chart.component.scss'],
 })
-export class FinancialChartComponent implements OnInit {
-  @Input() data!: DebtItem[];
-  @Input() debitorSelected = '';
-  @Input() creditorSelected = '';
+export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
+  data!: DebtItem[];
+  debitorSelected = '';
+  creditorSelected = '';
   creditorLastExpanse: any;
   debitorLastExpanse: any;
-  chart: any;
+  chart!: Chart;
+  subscription!: Subscription;
 
-  constructor() {
+  constructor(private readonly debtService: DebtService) {
     Chart.register(
       ArcElement,
       LineElement,
@@ -71,10 +74,18 @@ export class FinancialChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.createChart();
-    this.debitorLastExpanse = this.getLastExpanse(this.debitorSelected);
-    this.creditorLastExpanse = this.getLastExpanse(this.creditorSelected);
+    this.subscription = this.debtService.DebtItem$.subscribe((debts) => {
+      this.data = debts;
+      if (debts.length > 0) {
+        this.preselectDefaultCreditorDebitor();
+        this.createChart();
+        this.debitorLastExpanse = this.getLastExpanse(this.debitorSelected);
+        this.creditorLastExpanse = this.getLastExpanse(this.creditorSelected);
+      }
+    });
   }
+
+  ngOnChanges(): void {}
 
   generateLabels(): string[] {
     return this.data
@@ -152,6 +163,7 @@ export class FinancialChartComponent implements OnInit {
   }
 
   createChart() {
+    if (this.chart) this.chart.destroy();
     this.chart = new Chart('financialChart', {
       type: 'line',
       data: {
@@ -217,5 +229,14 @@ export class FinancialChartComponent implements OnInit {
         },
       },
     });
+  }
+
+  preselectDefaultCreditorDebitor() {
+    this.creditorSelected = this.data[0].creditor || '';
+    this.debitorSelected = this.data[0].debitor;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

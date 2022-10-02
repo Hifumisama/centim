@@ -1,30 +1,27 @@
-<div class="col-lg-4 col-md-6 mt-4 mb-4">
-  <div class="card z-index-2">
-    <div
-      class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
-    >
-      <div
-        class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1"
-      >
-        <div class="chart">
-          <canvas id="financialChart" class="chart-canvas" height="170">{{
-            chart
-          }}</canvas>
-        </div>
+<div class="card z-index-2">
+  <div
+    class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
+  >
+    <div class="bg-gradient-primary shadow-success border-radius-lg py-3 pe-1">
+      <div class="chart">
+        <canvas id="financialChart" class="chart-canvas" height="170">{{
+          chart
+        }}</canvas>
       </div>
     </div>
-    <div class="card-body">
-      <h6 class="mb-0">Courbe de dépenses</h6>
-      <p class="text-sm">
-        {{ creditorLastExpanse.user }}, Dernière dépense:
-        {{ creditorLastExpanse.amount | currency: "EUR" }} le
-        {{ creditorLastExpanse.date | date: "dd/MM/yyyy" }}
-      </p>
-      <p class="text-sm">
-        {{ debitorLastExpanse.user }}, Dernière dépense:
-        {{ debitorLastExpanse.amount | currency: "EUR" }} le
-        {{ debitorLastExpanse.date | date: "dd/MM/yyyy" }}
-      </p>
-    </div>
+  </div>
+  <div class="card-body">
+    <h6 class="mb-0">Courbe de dépenses</h6>
+
+    <p class="text-sm" *ngIf="creditorLastExpanse">
+      {{ creditorLastExpanse.user }}, Dernière dépense:
+      {{ creditorLastExpanse.amount | currency: "EUR" }} le
+      {{ creditorLastExpanse.date | date: "dd/MM/yyyy" }}
+    </p>
+    <p class="text-sm" *ngIf="debitorLastExpanse">
+      {{ debitorLastExpanse.user }}, Dernière dépense:
+      {{ debitorLastExpanse.amount | currency: "EUR" }} le
+      {{ debitorLastExpanse.date | date: "dd/MM/yyyy" }}
+    </p>
   </div>
 </div>

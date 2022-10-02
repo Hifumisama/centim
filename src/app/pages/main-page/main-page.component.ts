@@ -23,19 +23,9 @@ export class MainPageComponent implements OnInit {
   debitorSelected!: string;
 
   async ngOnInit(): Promise<void> {
-    this.debtService.DebtItem$.subscribe((debts) => {
-      this.sheetData = debts;
-    });
-
-    this.route.paramMap.subscribe(async (params) => {
+    this.route.paramMap.subscribe((params) => {
       this.sheetId = params.get('id') || '';
-      await this.debtService.fetchDebts(this.sheetId);
-      this.preselectDefaultCreditorDebitor();
     });
-  }
-
-  preselectDefaultCreditorDebitor() {
-    this.creditorSelected = this.sheetData[0].creditor || '';
-    this.debitorSelected = this.sheetData[0].debitor;
+    await this.debtService.fetchDebts(this.sheetId);
   }
 }
