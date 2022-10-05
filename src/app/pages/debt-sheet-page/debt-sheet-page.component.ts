@@ -15,9 +15,9 @@ export class DebtSheetPageComponent implements OnInit {
   constructor(private readonly debtListService: DebtListService) {}
 
   async ngOnInit(): Promise<void> {
+    await this.debtListService.getDebtSheets();
     this.debtListService.debtList$.subscribe((data) => {
       this.debtList = data;
     });
-    await this.debtListService.getDebtSheets();
   }
 }

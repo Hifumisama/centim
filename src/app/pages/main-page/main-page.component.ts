@@ -32,6 +32,14 @@ export class MainPageComponent implements OnInit {
 
   users!: string[];
 
+  get debitor() {
+    return this.debts ? this.debts[0].debitor : '';
+  }
+
+  get creditor() {
+    return this.debts ? this.debts[0].creditor : '';
+  }
+
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(async (params) => {
       this.sheetId = params.get('id') || '';
@@ -56,5 +64,6 @@ export class MainPageComponent implements OnInit {
 
   ngOnDestroy() {
     this.debtItem$.unsubscribe();
+    this.categories$.unsubscribe();
   }
 }

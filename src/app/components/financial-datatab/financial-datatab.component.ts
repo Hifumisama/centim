@@ -7,16 +7,12 @@ import { DebtService } from 'src/app/services/debt/debt.service';
   styleUrls: ['./financial-datatab.component.scss'],
 })
 export class FinancialDatatabComponent implements OnInit {
-  debtData!: DebtItem[];
+  @Input() debtData!: DebtItem[];
   debtSelected?: DebtItem;
 
   constructor(private readonly debtService: DebtService) {}
 
-  ngOnInit(): void {
-    this.debtService.DebtItem$.subscribe((debts) => {
-      this.debtData = debts;
-    });
-  }
+  ngOnInit(): void {}
 
   selectDebt(debtItem: DebtItem) {
     this.debtSelected = debtItem;

@@ -27,24 +27,19 @@ import {
   Tooltip,
   SubTitle,
 } from 'chart.js';
-import { DebtService } from 'src/app/services/debt/debt.service';
-import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-financial-chart',
   templateUrl: './financial-chart.component.html',
   styleUrls: ['./financial-chart.component.scss'],
 })
-export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
-  data!: DebtItem[];
-  debitorSelected = '';
-  creditorSelected = '';
-  creditorLastExpanse: any;
-  debitorLastExpanse: any;
+export class FinancialChartComponent implements OnInit, OnChanges {
+  @Input() data!: DebtItem[];
+  @Input() debitorSelected!: string;
+  @Input() creditorSelected?: string;
   chart!: Chart;
-  subscription!: Subscription;
 
-  constructor(private readonly debtService: DebtService) {
+  constructor() {
     Chart.register(
       ArcElement,
       LineElement,
@@ -74,15 +69,7 @@ export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.debtService.DebtItem$.subscribe((debts) => {
-      this.data = debts;
-      if (debts.length > 0) {
-        this.preselectDefaultCreditorDebitor();
-        this.createChart();
-        this.debitorLastExpanse = this.getLastExpanse(this.debitorSelected);
-        this.creditorLastExpanse = this.getLastExpanse(this.creditorSelected);
-      }
-    });
+    this.createChart();
   }
 
   ngOnChanges(): void {}
@@ -94,19 +81,6 @@ export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
         (x) =>
           `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
       );
-  }
-
-  getLastExpanse(user: string) {
-    const filter = this.data
-      .filter((x) => x.debitor === user)
-      .sort(
-        (a, b) => a.transactionDate.getTime() - b.transactionDate.getTime()
-      );
-    return {
-      user,
-      amount: filter[filter.length - 1].amount,
-      date: filter[filter.length - 1].transactionDate,
-    };
   }
 
   generateValues(user: string): any[] {
@@ -229,14 +203,5 @@ export class FinancialChartComponent implements OnInit, OnChanges, OnDestroy {
         },
       },
     });
-  }
-
-  preselectDefaultCreditorDebitor() {
-    this.creditorSelected = this.data[0].creditor || '';
-    this.debitorSelected = this.data[0].debitor;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

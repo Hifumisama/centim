@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DebtItem } from 'src/app/interfaces/interfaces';
 import {
   Chart,
@@ -35,15 +35,15 @@ import { Subscription } from 'rxjs';
   templateUrl: './debt-chart.component.html',
   styleUrls: ['./debt-chart.component.scss'],
 })
-export class DebtChartComponent implements OnInit, OnDestroy {
-  data!: DebtItem[];
-  debitorSelected!: string;
-  creditorSelected!: string;
+export class DebtChartComponent implements OnInit {
+  @Input() data!: DebtItem[];
+  @Input() debitorSelected!: string;
+  @Input() creditorSelected!: string;
   chart!: Chart;
 
   subscription!: Subscription;
 
-  constructor(private readonly debtService: DebtService) {
+  constructor() {
     Chart.register(
       ArcElement,
       LineElement,
@@ -73,13 +73,7 @@ export class DebtChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.debtService.DebtItem$.subscribe((debts) => {
-      this.data = debts;
-      if (debts.length > 0) {
-        this.preselectDefaultCreditorDebitor();
-        this.createChart();
-      }
-    });
+    this.createChart();
   }
 
   generateLabels(): string[] {
@@ -194,13 +188,5 @@ export class DebtChartComponent implements OnInit, OnDestroy {
         },
       },
     });
-  }
-
-  preselectDefaultCreditorDebitor() {
-    this.creditorSelected = this.data[0].creditor || '';
-    this.debitorSelected = this.data[0].debitor;
-  }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
