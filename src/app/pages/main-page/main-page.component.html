@@ -6,6 +6,15 @@
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
       <app-debt-chart></app-debt-chart>
     </div>
+    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+      <ng-container *ngIf="debts && debts.length > 0">
+        <app-finances-portion
+          [data]="debts"
+          [categories]="categories"
+          [users]="users"
+        ></app-finances-portion>
+      </ng-container>
+    </div>
   </div>
 </div>
 

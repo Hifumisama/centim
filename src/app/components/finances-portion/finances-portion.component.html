@@ -1,1 +1,20 @@
-<p>Finances portion à créer</p>
+<div class="card z-index-2">
+  <div
+    class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
+  >
+    <div class="bg-gradient-primary shadow-success border-radius-lg py-3 pe-1">
+      <div class="container-fluid">
+        <div class="row" *ngIf="chartDataList">
+          <ng-container *ngFor="let chart of chartDataList">
+            <div class="chart col-6">
+              <canvas #pr_chart class="chart-canvas" height="165"></canvas>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <h6 class="mb-0">Répartition des dépenses</h6>
+  </div>
+</div>
