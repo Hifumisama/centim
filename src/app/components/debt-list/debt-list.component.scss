@@ -10,8 +10,8 @@
   cursor:pointer;
 }
 
-.sticky-button {
-  position: sticky;
+.fixed-button {
+  position: fixed;
   top: calc(100vh - 60px);
   left: calc(100vw - 90px);
 }

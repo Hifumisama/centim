@@ -1,197 +1,181 @@
 <div class="main-content position-relative max-height-vh-100 border-radius-lg">
-  <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div
-              class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
-            >
-              <p class="text-white text-capitalize ps-3">Transactions</p>
-            </div>
-          </div>
+  <div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+      <div
+        class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+      >
+        <p class="text-white text-capitalize ps-3">Transactions</p>
+      </div>
+    </div>
 
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-              <!-- desktop -->
-              <table
-                class="table table-striped align-items-center mb-0 d-none d-md-table"
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <!-- desktop -->
+        <table
+          class="table table-striped align-items-center mb-0 d-none d-md-table"
+        >
+          <thead>
+            <tr>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
               >
-                <thead>
-                  <tr>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                    >
-                      Transaction
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Le
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Montant
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Catégorie
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Détails
-                    </th>
-                    <th class="text-secondary opacity-7"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let debtItem of debtData">
-                    <tr class="bg-gray-100 tableRow">
-                      <td class="align-middle text-center text-sm">
-                        <p class="text-xs text-secondary mb-0">
-                          {{ debtItem.debitor }} => {{ debtItem.creditor }}
-                        </p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <p class="text-xs text-secondary mb-0">
-                          {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
-                        </p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <p class="text-xs text-secondary mb-0">
-                          {{ debtItem.amount | currency: "EUR" }}
-                        </p>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs">
-                          {{ debtItem.type }}</span
-                        >
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs">
-                          {{ debtItem.reason }}</span
-                        >
-                      </td>
-                      <td class="align-middle">
-                        <a
-                          href="#debtSheetEdit"
-                          data-bs-toggle="modal"
-                          data-bs-target="#debtEdit"
-                          (click)="selectDebt(debtItem)"
-                        >
-                          <i class="material-icons">edit</i>
-                        </a>
-                        <i
-                          class="material-icons"
-                          (click)="deleteDebt(debtItem.id)"
-                          >close</i
-                        >
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
+                Transaction
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Le
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Montant
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Catégorie
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Détails
+              </th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let debtItem of debtData">
+              <tr class="bg-gray-100 tableRow">
+                <td class="align-middle text-center text-sm">
+                  <p class="text-xs text-secondary mb-0">
+                    {{ debtItem.debitor }} => {{ debtItem.creditor }}
+                  </p>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <p class="text-xs text-secondary mb-0">
+                    {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
+                  </p>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <p class="text-xs text-secondary mb-0">
+                    {{ debtItem.amount | currency: "EUR" }}
+                  </p>
+                </td>
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-xs">
+                    {{ debtItem.type }}</span
+                  >
+                </td>
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-xs">
+                    {{ debtItem.reason }}</span
+                  >
+                </td>
+                <td class="align-middle">
+                  <a
+                    href="#debtSheetEdit"
+                    data-bs-toggle="modal"
+                    data-bs-target="#debtEdit"
+                    (click)="selectDebt(debtItem)"
+                  >
+                    <i class="material-icons">edit</i>
+                  </a>
+                  <i class="material-icons" (click)="deleteDebt(debtItem.id)"
+                    >close</i
+                  >
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
 
-              <!-- mobile -->
-              <table
-                class="table table-striped align-items-center mb-0 d-md-none"
-              >
-                <tbody>
-                  <ng-container *ngFor="let debtItem of debtData">
-                    <tr class="bg-gray-100 tableRow d-flex flex-column mb-2">
-                      <td class="align-middle text-center text-sm">
-                        <div class="row d-flex flex-row">
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            Transaction:
-                          </p>
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            {{ debtItem.debitor }} => {{ debtItem.creditor }}
-                          </p>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <div class="row d-flex flex-row">
-                          <p class="text-xs text-secondary mb-0 col-6">Le :</p>
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
-                          </p>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <div class="row d-flex flex-row">
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            Montant :
-                          </p>
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            {{ debtItem.amount | currency: "EUR" }}
-                          </p>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="row d-flex flex-row">
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            Catégorie :
-                          </p>
-                          <span class="text-secondary text-xs col-6">
-                            {{ debtItem.type }}</span
-                          >
-                        </div>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="row d-flex flex-row">
-                          <p class="text-xs text-secondary mb-0 col-6">
-                            Description :
-                          </p>
-                          <span class="text-secondary text-xs col-6">
-                            {{ debtItem.reason }}</span
-                          >
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <div class="row d-flex flex-row">
-                          <p
-                            class="text-xs text-secondary text-center mb-0 col-6"
-                          >
-                            Actions :
-                          </p>
-                          <div class="text-center col-6">
-                            <a
-                              href="#debtSheetEdit"
-                              data-bs-toggle="modal"
-                              data-bs-target="#debtEdit"
-                              (click)="selectDebt(debtItem)"
-                            >
-                              <i class="material-icons">edit</i>
-                            </a>
-                            <i
-                              class="material-icons"
-                              (click)="deleteDebt(debtItem.id)"
-                              >close</i
-                            >
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <!-- mobile -->
+        <table class="table table-striped align-items-center mb-0 d-md-none">
+          <tbody>
+            <ng-container *ngFor="let debtItem of debtData">
+              <tr class="bg-gray-100 tableRow d-flex flex-column mb-2">
+                <td class="align-middle text-center text-sm">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary mb-0 col-6">
+                      Transaction:
+                    </p>
+                    <p class="text-xs text-secondary mb-0 col-6">
+                      {{ debtItem.debitor }} => {{ debtItem.creditor }}
+                    </p>
+                  </div>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary mb-0 col-6">Le :</p>
+                    <p class="text-xs text-secondary mb-0 col-6">
+                      {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
+                    </p>
+                  </div>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary mb-0 col-6">Montant :</p>
+                    <p class="text-xs text-secondary mb-0 col-6">
+                      {{ debtItem.amount | currency: "EUR" }}
+                    </p>
+                  </div>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary mb-0 col-6">Catégorie :</p>
+                    <span class="text-secondary text-xs col-6">
+                      {{ debtItem.type }}</span
+                    >
+                  </div>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary mb-0 col-6">
+                      Description :
+                    </p>
+                    <span class="text-secondary text-xs col-6">
+                      {{ debtItem.reason }}</span
+                    >
+                  </div>
+                </td>
+                <td class="align-middle">
+                  <div class="row d-flex flex-row">
+                    <p class="text-xs text-secondary text-center mb-0 col-6">
+                      Actions :
+                    </p>
+                    <div class="text-center col-6">
+                      <a
+                        href="#debtSheetEdit"
+                        data-bs-toggle="modal"
+                        data-bs-target="#debtEdit"
+                        (click)="selectDebt(debtItem)"
+                      >
+                        <i class="material-icons">edit</i>
+                      </a>
+                      <i
+                        class="material-icons"
+                        (click)="deleteDebt(debtItem.id)"
+                        >close</i
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
   <button
     type="button"
-    class="btn btn-primary sticky-button"
+    class="btn btn-primary fixed-button"
     data-bs-toggle="modal"
     data-bs-target="#debtEdit"
+    (click)="addDebt()"
   >
     <span class="btn-inner--icon"><i class="material-icons">add</i></span>
-    <span class="btn-inner--text" (click)="addDebt()">Ajouter une dette</span>
   </button>
 </div>
 <app-financial-form [initialData]="debtSelected"></app-financial-form>

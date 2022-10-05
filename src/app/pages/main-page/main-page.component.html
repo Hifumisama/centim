@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="debts && debts.length > 0">
   <div class="row">
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
       <app-financial-chart></app-financial-chart>
@@ -7,7 +7,7 @@
       <app-debt-chart></app-debt-chart>
     </div>
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
-      <ng-container *ngIf="debts && debts.length > 0">
+      <ng-container>
         <app-finances-portion
           [data]="debts"
           [categories]="categories"
@@ -16,6 +16,9 @@
       </ng-container>
     </div>
   </div>
+  <div class="row">
+    <div class="col-12">
+      <app-financial-datatab></app-financial-datatab>
+    </div>
+  </div>
 </div>
-
-<app-financial-datatab></app-financial-datatab>
