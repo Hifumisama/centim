@@ -1,33 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { DebtItem } from 'src/app/interfaces/interfaces';
-import {
-  Chart,
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Decimation,
-  Filler,
-  Legend,
-  Title,
-  Tooltip,
-  SubTitle,
-} from 'chart.js';
-import { DebtService } from 'src/app/services/debt/debt.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -38,42 +10,21 @@ import { Subscription } from 'rxjs';
 export class DebtChartComponent implements OnInit {
   @Input() data!: DebtItem[];
   @Input() debitorSelected!: string;
-  @Input() creditorSelected!: string;
-  chart!: Chart;
+  @Input() creditorSelected?: string;
+  chartData!: any;
 
   subscription!: Subscription;
 
-  constructor() {
-    Chart.register(
-      ArcElement,
-      LineElement,
-      BarElement,
-      PointElement,
-      BarController,
-      BubbleController,
-      DoughnutController,
-      LineController,
-      PieController,
-      PolarAreaController,
-      RadarController,
-      ScatterController,
-      CategoryScale,
-      LinearScale,
-      LogarithmicScale,
-      RadialLinearScale,
-      TimeScale,
-      TimeSeriesScale,
-      Decimation,
-      Filler,
-      Legend,
-      Title,
-      Tooltip,
-      SubTitle
-    );
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-    this.createChart();
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['data'].isFirstChange() && this.data && this.data.length > 0) {
+      this.chartData = this.createChart();
+    }
   }
 
   generateLabels(): string[] {
@@ -122,8 +73,7 @@ export class DebtChartComponent implements OnInit {
   }
 
   createChart() {
-    if (this.chart) this.chart.destroy();
-    this.chart = new Chart('debtChart', {
+    return {
       type: 'line',
       data: {
         labels: this.generateLabels(),
@@ -187,6 +137,6 @@ export class DebtChartComponent implements OnInit {
           },
         },
       },
-    });
+    };
   }
 }

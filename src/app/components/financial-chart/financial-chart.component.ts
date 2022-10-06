@@ -1,32 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { DebtItem } from 'src/app/interfaces/interfaces';
 import {
-  Chart,
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Decimation,
-  Filler,
-  Legend,
-  Title,
-  Tooltip,
-  SubTitle,
-} from 'chart.js';
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { DebtItem } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-financial-chart',
@@ -37,42 +16,23 @@ export class FinancialChartComponent implements OnInit, OnChanges {
   @Input() data!: DebtItem[];
   @Input() debitorSelected!: string;
   @Input() creditorSelected?: string;
-  chart!: Chart;
+  chartData!: any;
 
-  constructor() {
-    Chart.register(
-      ArcElement,
-      LineElement,
-      BarElement,
-      PointElement,
-      BarController,
-      BubbleController,
-      DoughnutController,
-      LineController,
-      PieController,
-      PolarAreaController,
-      RadarController,
-      ScatterController,
-      CategoryScale,
-      LinearScale,
-      LogarithmicScale,
-      RadialLinearScale,
-      TimeScale,
-      TimeSeriesScale,
-      Decimation,
-      Filler,
-      Legend,
-      Title,
-      Tooltip,
-      SubTitle
-    );
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    this.createChart();
+    if (this.data && this.data.length > 0 && this.debitorSelected) {
+      this.chartData = this.createChart();
+    }
   }
 
-  ngOnChanges(): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['data'].isFirstChange()) {
+      if (this.data && this.data.length > 0 && this.debitorSelected) {
+        this.chartData = this.createChart();
+      }
+    }
+  }
 
   generateLabels(): string[] {
     return this.data
@@ -137,8 +97,7 @@ export class FinancialChartComponent implements OnInit, OnChanges {
   }
 
   createChart() {
-    if (this.chart) this.chart.destroy();
-    this.chart = new Chart('financialChart', {
+    return {
       type: 'line',
       data: {
         labels: this.generateLabels(),
@@ -202,6 +161,6 @@ export class FinancialChartComponent implements OnInit, OnChanges {
           },
         },
       },
-    });
+    };
   }
 }

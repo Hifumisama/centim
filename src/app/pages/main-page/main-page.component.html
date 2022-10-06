@@ -1,15 +1,13 @@
-<div class="container-fluid" *ngIf="debts && debts.length > 0">
+<div class="container-fluid">
   <div class="row">
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
-      <ng-container *ngIf="debitor">
-        <app-financial-chart
-          [data]="debts"
-          [debitorSelected]="debitor"
-          [creditorSelected]="creditor"
-        ></app-financial-chart>
-      </ng-container>
+      <app-financial-chart
+        [data]="debts"
+        [debitorSelected]="debitor"
+        [creditorSelected]="creditor"
+      ></app-financial-chart>
     </div>
-    <ng-container *ngIf="debitor && creditor">
+    <ng-container>
       <div class="col-lg-4 col-md-6 mt-4 mb-4">
         <app-debt-chart
           [data]="debts"

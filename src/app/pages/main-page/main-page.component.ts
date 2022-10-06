@@ -31,14 +31,8 @@ export class MainPageComponent implements OnInit {
   categories!: Category[];
 
   users!: string[];
-
-  get debitor() {
-    return this.debts ? this.debts[0].debitor : '';
-  }
-
-  get creditor() {
-    return this.debts ? this.debts[0].creditor : '';
-  }
+  debitor!: string;
+  creditor!: string;
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(async (params) => {
@@ -53,12 +47,17 @@ export class MainPageComponent implements OnInit {
       );
       this.debtItem$ = this.debtService.DebtItem$.subscribe((debts) => {
         this.debts = debts;
+        if (this.debts && this.debts.length > 0) {
+          const debitor = this.debts[0].debitor;
+          this.users = [debitor];
+          this.debitor = debitor;
+          if (this.debts[0].creditor) {
+            const creditor = this.debts[0].creditor;
+            this.users.push(creditor);
+            this.creditor = creditor;
+          }
+        }
       });
-
-      this.users = [this.debts[0].debitor];
-      if (this.debts[0].creditor) {
-        this.users.push(this.debts[0].creditor);
-      }
     });
   }
 

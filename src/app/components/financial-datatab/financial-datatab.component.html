@@ -45,50 +45,55 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let debtItem of debtData">
-              <tr class="bg-gray-100 tableRow">
-                <td class="align-middle text-center text-sm">
-                  <p class="text-xs text-secondary mb-0">
-                    {{ debtItem.debitor }} => {{ debtItem.creditor }}
-                  </p>
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <p class="text-xs text-secondary mb-0">
-                    {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
-                  </p>
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <p class="text-xs text-secondary mb-0">
-                    {{ debtItem.amount | currency: "EUR" }}
-                  </p>
-                </td>
-                <td class="align-middle text-center">
-                  <span class="text-secondary text-xs">
-                    {{ debtItem.type }}</span
-                  >
-                </td>
-                <td class="align-middle text-center">
-                  <span class="text-secondary text-xs">
-                    {{ debtItem.reason }}</span
-                  >
-                </td>
-                <td class="align-middle">
-                  <a
-                    href="#debtSheetEdit"
-                    data-bs-toggle="modal"
-                    data-bs-target="#debtEdit"
-                    (click)="selectDebt(debtItem)"
-                  >
-                    <i class="material-icons">edit</i>
-                  </a>
-                  <i class="material-icons" (click)="deleteDebt(debtItem.id)"
-                    >close</i
-                  >
-                </td>
-              </tr>
+            <ng-container *ngIf="debtData && debtData.length > 0">
+              <ng-container *ngFor="let debtItem of debtData">
+                <tr class="bg-gray-100 tableRow">
+                  <td class="align-middle text-center text-sm">
+                    <p class="text-xs text-secondary mb-0">
+                      {{ debtItem.debitor }} => {{ debtItem.creditor }}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <p class="text-xs text-secondary mb-0">
+                      {{ debtItem.transactionDate | date: "dd/MM/yyyy" }}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <p class="text-xs text-secondary mb-0">
+                      {{ debtItem.amount | currency: "EUR" }}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs">
+                      {{ debtItem.type }}</span
+                    >
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs">
+                      {{ debtItem.reason }}</span
+                    >
+                  </td>
+                  <td class="align-middle">
+                    <a
+                      href="#debtSheetEdit"
+                      data-bs-toggle="modal"
+                      data-bs-target="#debtEdit"
+                      (click)="selectDebt(debtItem)"
+                    >
+                      <i class="material-icons">edit</i>
+                    </a>
+                    <i class="material-icons" (click)="deleteDebt(debtItem.id)"
+                      >close</i
+                    >
+                  </td>
+                </tr>
+              </ng-container>
             </ng-container>
           </tbody>
         </table>
+        <ng-container *ngIf="!(debtData && debtData.length > 0)">
+          <div class="no-item">Aucune donnée récupérée</div>
+        </ng-container>
 
         <!-- mobile -->
         <table class="table table-striped align-items-center mb-0 d-md-none">

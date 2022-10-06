@@ -31,8 +31,6 @@ export class DebtListComponent implements OnInit {
 
   async deleteDebtSheet(event: any, id: string) {
     event.stopPropagation();
-    await this.debtListService.deleteDebtSheets(id).then(() => {
-      const index = this.data.findIndex((x) => x.id === id);
-    });
+    await this.debtListService.deleteDebtSheets(id);
   }
 }

@@ -46,7 +46,7 @@ import {
 export class FinancesPortionComponent
   implements OnInit, OnChanges, AfterViewInit
 {
-  @Input() data: DebtItem[] = [];
+  @Input() data!: DebtItem[];
   @Input() categories!: Category[];
   @Input() users!: string[];
 
@@ -88,15 +88,21 @@ export class FinancesPortionComponent
   }
 
   ngOnInit() {
-    this.chartDataList = this.users.map((user) => this.generateChartData(user));
+    if (this.data && this.data.length > 0) {
+      this.chartDataList = this.users.map((user) =>
+        this.generateChartData(user)
+      );
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes['data'].isFirstChange()) {
-      this.chartDataList = this.users.map((user) =>
-        this.generateChartData(user)
-      );
-      this.chartElementRefs.changes.subscribe((_) => this.drawCharts());
+      if (this.data && this.data.length > 0) {
+        this.chartDataList = this.users.map((user) =>
+          this.generateChartData(user)
+        );
+        this.chartElementRefs.changes.subscribe((_) => this.drawCharts());
+      }
     }
   }
 

@@ -12,3 +12,12 @@
   left: calc(100vw - 90px);
   z-index:10;
 }
+
+.no-item{
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  align-items: center;
+  font-size: 1.2em;
+  background-color: lightgray;
+}
