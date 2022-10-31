@@ -24,3 +24,9 @@ export interface Category {
   created_at?: Date;
   backgroundColor?: string;
 }
+
+export interface LastExpanse {
+  username: string;
+  amount: number;
+  date: Date;
+}

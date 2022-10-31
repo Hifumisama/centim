@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { DebtItem } from 'src/app/interfaces/interfaces';
+import { BehaviorSubject, last } from 'rxjs';
+import { DebtItem, LastExpanse } from 'src/app/interfaces/interfaces';
 import { SupabaseService } from '../supabase.service';
 
 @Injectable({
@@ -8,7 +8,9 @@ import { SupabaseService } from '../supabase.service';
 })
 export class DebtService {
   private readonly _debtSource = new BehaviorSubject<DebtItem[]>([]);
+  private readonly _lastExpanse = new BehaviorSubject<DebtItem[]>([]);
   readonly DebtItem$ = this._debtSource.asObservable();
+  readonly LastExpanseItem$ = this._lastExpanse.asObservable();
 
   constructor(private readonly supabaseService: SupabaseService) {}
 
@@ -18,6 +20,14 @@ export class DebtService {
 
   private _setDebt(DebtItem: DebtItem[]) {
     this._debtSource.next(DebtItem);
+  }
+
+  getLastExpanse(): DebtItem[] {
+    return this._lastExpanse.getValue();
+  }
+
+  private _setLastExpanse(lastExpanse: DebtItem[]) {
+    return this._lastExpanse.next(lastExpanse);
   }
 
   addDebt(DebtItem: DebtItem): void {
@@ -67,5 +77,21 @@ export class DebtService {
   async deleteDebt(id: string) {
     await this.supabaseService.supabase.from('dettes').delete().match({ id });
     this.removeDebt(id);
+  }
+
+  async fetchLastExpanses(users: string[]) {
+    let lastExpanse: DebtItem[] = [];
+    let { data: debtSorted, error } = await this.supabaseService.supabase
+      .from('dettes')
+      .select()
+      .order('transactionDate', { ascending: false });
+    if (debtSorted) {
+      lastExpanse = users
+        .map((user) => {
+          return debtSorted?.find((debt) => debt.debitor === user);
+        })
+        .filter((expanse) => expanse !== undefined);
+    }
+    this._setLastExpanse(lastExpanse);
   }
 }

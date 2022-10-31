@@ -7,22 +7,25 @@
         [creditorSelected]="creditor"
       ></app-financial-chart>
     </div>
-    <ng-container>
-      <div class="col-lg-4 col-md-6 mt-4 mb-4">
-        <app-debt-chart
-          [data]="debts"
-          [debitorSelected]="debitor"
-          [creditorSelected]="creditor"
-        ></app-debt-chart>
-      </div>
-    </ng-container>
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
-      <ng-container>
-        <app-finances-portion
-          [data]="debts"
-          [categories]="categories"
-          [users]="users"
-        ></app-finances-portion>
+      <app-debt-chart
+        [data]="debts"
+        [debitorSelected]="debitor"
+        [creditorSelected]="creditor"
+      ></app-debt-chart>
+    </div>
+    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+      <app-finances-portion
+        [data]="debts"
+        [categories]="categories"
+        [users]="users"
+      ></app-finances-portion>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-6">
+      <ng-container *ngIf="users">
+        <app-last-expanse [users]="users"></app-last-expanse>
       </ng-container>
     </div>
   </div>

@@ -24,6 +24,7 @@ import { DebtListComponent } from './components/debt-list/debt-list.component';
 import { DebtSheetEditComponent } from './components/debt-sheet-edit/debt-sheet-edit.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { LastExpanseComponent } from './components/last-expanse/last-expanse.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -45,6 +46,7 @@ registerLocaleData(localeFr);
     DebtSheetEditComponent,
     HeroComponent,
     ChartComponent,
+    LastExpanseComponent,
   ],
   imports: [
     BrowserModule,

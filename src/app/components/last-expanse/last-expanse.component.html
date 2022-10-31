@@ -1,0 +1,24 @@
+<div class="card z-index-2">
+  <div class="card-header mx-4 p-3 text-center">
+    <div
+      class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg"
+    >
+      <i class="material-icons opacity-10">account_balance</i>
+    </div>
+  </div>
+  <div class="card-body">
+    <ng-container>
+      <div class="row">
+        <ng-container *ngFor="let lastExpanse of lastExpanses">
+          <p class="col-12 no-item">
+            <span></span>
+            {{ lastExpanse.debitor }} a dernièrement dépensé
+            {{ lastExpanse.amount | currency: "EUR" }} le :
+            {{ lastExpanse.transactionDate | date: "dd/MM/yyyy" }} pour un
+            {{ lastExpanse.type }}
+          </p>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

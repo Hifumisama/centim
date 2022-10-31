@@ -91,11 +91,30 @@
             <div class="col-12">
               <div class="input-group input-group-static my-3">
                 <label for="type" class="ms-0">Catégorie</label>
-                <select class="form-control" id="type" formControlName="type">
+                <input
+                  id="type"
+                  formControlName="type"
+                  type="hidden"
+                  value=""
+                />
+                <div class="button-list">
                   <ng-container *ngFor="let type of types">
-                    <option>{{ type.name }}</option>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm button-item"
+                      [ngClass]="{
+                        'btn-primary':
+                          financialForm.get('type')?.value !== type.name,
+                        'btn-outline-primary':
+                          financialForm.get('type')?.value === type.name
+                      }"
+                      (click)="financialForm.get('type')?.setValue(type.name)"
+                    >
+                      {{ type.name }}
+                    </button>
+                    <div></div>
                   </ng-container>
-                </select>
+                </div>
               </div>
             </div>
           </div>
