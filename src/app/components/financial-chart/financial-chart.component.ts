@@ -35,32 +35,22 @@ export class FinancialChartComponent implements OnInit, OnChanges {
   }
 
   generateLabels(): string[] {
-    return this.data
-      .sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime())
-      .map(
-        (x) =>
-          `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
-      );
+    return this.data.map(
+      (x) =>
+        `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
+    );
   }
 
   generateValues(user: string): any[] {
-    const userValues = this.data.sort(
-      (a, b) => a.transactionDate.getTime() - b.transactionDate.getTime()
-    );
-    const result = userValues.reduce(
-      (prevValue: number[], currentValue, index) => {
-        const oldValue = prevValue[index - 1] || prevValue[index] || 0;
-        const result =
-          currentValue.debitor === user
-            ? currentValue.amount + (prevValue[index - 1] || 0)
-            : oldValue;
-        prevValue.push(result);
-        return prevValue;
-      },
-      []
-    );
-
-    return result;
+    return this.data.reduce((prevValue: number[], currentValue, index) => {
+      const oldValue = prevValue[index - 1] || prevValue[index] || 0;
+      const result =
+        currentValue.debitor === user
+          ? currentValue.amount + (prevValue[index - 1] || 0)
+          : oldValue;
+      prevValue.push(result);
+      return prevValue;
+    }, []);
   }
 
   generateDataSets(): any[] {

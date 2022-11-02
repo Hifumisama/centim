@@ -28,18 +28,15 @@ export class DebtChartComponent implements OnInit {
   }
 
   generateLabels(): string[] {
-    return this.data
-      .sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime())
-      .map(
-        (x) =>
-          `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
-      );
+    return this.data.map(
+      (x) =>
+        `${x.transactionDate.getDate()}/${x.transactionDate.getMonth() + 1}`
+    );
   }
 
   generateValues(): number[] {
-    return this.data
-      .sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime())
-      .reduce((previousVal: number[], currentVal: DebtItem, index) => {
+    return this.data.reduce(
+      (previousVal: number[], currentVal: DebtItem, index) => {
         const value = previousVal[index - 1] || 0;
 
         if (currentVal.creditor === this.creditorSelected) {
@@ -52,7 +49,9 @@ export class DebtChartComponent implements OnInit {
           return previousVal;
         }
         return previousVal;
-      }, []);
+      },
+      []
+    );
   }
 
   generateDataSets(): any[] {

@@ -9,8 +9,29 @@
   <div class="card-body">
     <ng-container>
       <div class="row">
+        <ng-container *ngIf="actualDebt > 0"
+          ><p class="col-12 center">
+            <b>{{ this.users[0] }}</b> doit
+            <b>{{ actualDebtAbsolute | currency: "EUR" }} €</b> à
+            <b>{{ this.users[1] }}</b>
+          </p></ng-container
+        >
+        <ng-container *ngIf="actualDebt === 0"
+          ><p class="col-12 center">
+            La dette est à l'équilibre ! Personne ne doit à personne :)
+          </p></ng-container
+        >
+        <ng-container *ngIf="actualDebt < 0"
+          ><p class="col-12 center">
+            <b>{{ this.users[1] }}</b> doit
+            <b>{{ actualDebtAbsolute | currency: "EUR" }} €</b> à
+            <b>{{ this.users[0] }}</b>
+          </p></ng-container
+        >
+      </div>
+      <div class="row">
         <ng-container *ngFor="let lastExpanse of lastExpanses">
-          <p class="col-12 no-item">
+          <p class="col-12 center">
             <b>{{ lastExpanse.debitor }}</b> a dernièrement dépensé
             <b>
               {{ lastExpanse.amount | currency: "EUR" }}

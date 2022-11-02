@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, last } from 'rxjs';
 import { DebtItem, LastExpanse } from 'src/app/interfaces/interfaces';
+import { LocalService } from '../local/local.service';
 import { SupabaseService } from '../supabase.service';
 
 @Injectable({
@@ -9,10 +10,22 @@ import { SupabaseService } from '../supabase.service';
 export class DebtService {
   private readonly _debtSource = new BehaviorSubject<DebtItem[]>([]);
   private readonly _lastExpanse = new BehaviorSubject<DebtItem[]>([]);
+  // Rajouter un type spécifique ici :)
+  private readonly _ActualDebt = new BehaviorSubject<number>(0);
   readonly DebtItem$ = this._debtSource.asObservable();
   readonly LastExpanseItem$ = this._lastExpanse.asObservable();
+  readonly ActualDebt$ = this._ActualDebt.asObservable();
 
-  constructor(private readonly supabaseService: SupabaseService) {}
+  sheetId!: string;
+
+  constructor(
+    private readonly supabaseService: SupabaseService,
+    private readonly localService: LocalService
+  ) {
+    this.localService.sheetSelected$.subscribe((sheetId) => {
+      this.sheetId = sheetId;
+    });
+  }
 
   getDebts(): DebtItem[] {
     return this._debtSource.getValue();
@@ -28,6 +41,14 @@ export class DebtService {
 
   private _setLastExpanse(lastExpanse: DebtItem[]) {
     return this._lastExpanse.next(lastExpanse);
+  }
+
+  getActualDebt(): number {
+    return this._ActualDebt.getValue();
+  }
+
+  private _setActualDebt(actualDebt: number): void {
+    return this._ActualDebt.next(actualDebt);
   }
 
   addDebt(DebtItem: DebtItem): void {
@@ -50,11 +71,12 @@ export class DebtService {
     this._setDebt(debts);
   }
 
-  async fetchDebts(sheetId: string) {
+  async fetchDebts() {
     let { data: dettes, error } = await this.supabaseService.supabase
       .from('dettes')
       .select()
-      .eq('feuillesDettes', sheetId);
+      .eq('feuillesDettes', this.sheetId)
+      .order('transactionDate');
     if (dettes && dettes.length > 0) {
       dettes.map((x) => (x.transactionDate = new Date(x.transactionDate)));
     }
@@ -84,6 +106,7 @@ export class DebtService {
     let { data: debtSorted, error } = await this.supabaseService.supabase
       .from('dettes')
       .select()
+      .eq('feuillesDettes', this.sheetId)
       .order('transactionDate', { ascending: false });
     if (debtSorted) {
       lastExpanse = users
@@ -93,5 +116,28 @@ export class DebtService {
         .filter((expanse) => expanse !== undefined);
     }
     this._setLastExpanse(lastExpanse);
+  }
+
+  async calculateActualDebt(users: string[]) {
+    let { data: debtSorted, error } = await this.supabaseService.supabase
+      .from('dettes')
+      .select()
+      .eq('feuillesDettes', this.sheetId)
+      .order('transactionDate');
+
+    const actualDebt = debtSorted?.reduce(
+      (previousVal: number, currentVal: DebtItem) => {
+        if (currentVal.creditor === users[0]) {
+          return previousVal + currentVal.amount;
+        }
+
+        if (currentVal.creditor === users[1]) {
+          return previousVal - currentVal.amount;
+        }
+        return previousVal;
+      },
+      0
+    );
+    this._setActualDebt(actualDebt);
   }
 }

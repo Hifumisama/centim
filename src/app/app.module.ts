@@ -12,7 +12,6 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { FinancesPortionComponent } from './components/finances-portion/finances-portion.component';
 import { FinancialFormComponent } from './components/financial-form/financial-form.component';
-import { DebtResumeComponent } from './components/debt-resume/debt-resume.component';
 import { PositivePipe } from './pipes/positive.pipe';
 import { DebtChartComponent } from './components/debt-chart/debt-chart.component';
 import { FinancialChartComponent } from './components/financial-chart/financial-chart.component';
@@ -35,7 +34,6 @@ registerLocaleData(localeFr);
     FinancialDatatabComponent,
     FinancesPortionComponent,
     FinancialFormComponent,
-    DebtResumeComponent,
     PositivePipe,
     DebtChartComponent,
     FinancialChartComponent,

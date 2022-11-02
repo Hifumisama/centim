@@ -38,7 +38,7 @@ export class MainPageComponent implements OnInit {
     this.route.paramMap.subscribe(async (params) => {
       this.sheetId = params.get('id') || '';
       this.localService.setSheetSelected(this.sheetId);
-      await this.debtService.fetchDebts(this.sheetId);
+      await this.debtService.fetchDebts();
       await this.categoriesService.fetchCategory();
       this.categories$ = this.categoriesService.Category$.subscribe(
         (categories) => {
