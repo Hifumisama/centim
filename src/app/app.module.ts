@@ -25,6 +25,7 @@ import { DebtSheetEditComponent } from './components/debt-sheet-edit/debt-sheet-
 import { HeroComponent } from './components/hero/hero.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { LastExpanseComponent } from './components/last-expanse/last-expanse.component';
+import { CategoryColorComponent } from './components/category-color/category-color.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -47,6 +48,7 @@ registerLocaleData(localeFr);
     HeroComponent,
     ChartComponent,
     LastExpanseComponent,
+    CategoryColorComponent,
   ],
   imports: [
     BrowserModule,

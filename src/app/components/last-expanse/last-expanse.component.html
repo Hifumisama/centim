@@ -11,11 +11,18 @@
       <div class="row">
         <ng-container *ngFor="let lastExpanse of lastExpanses">
           <p class="col-12 no-item">
-            <span></span>
-            {{ lastExpanse.debitor }} a dernièrement dépensé
-            {{ lastExpanse.amount | currency: "EUR" }} le :
-            {{ lastExpanse.transactionDate | date: "dd/MM/yyyy" }} pour un
-            {{ lastExpanse.type }}
+            <b>{{ lastExpanse.debitor }}</b> a dernièrement dépensé
+            <b>
+              {{ lastExpanse.amount | currency: "EUR" }}
+            </b>
+            le :
+            <b>
+              {{ lastExpanse.transactionDate | date: "dd/MM/yyyy" }}
+            </b>
+            pour un
+            <app-category-color
+              [categoryName]="lastExpanse.type"
+            ></app-category-color>
           </p>
         </ng-container>
       </div>

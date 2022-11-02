@@ -65,8 +65,10 @@
                   </td>
                   <td class="align-middle text-center">
                     <span class="text-secondary text-xs">
-                      {{ debtItem.type }}</span
-                    >
+                      <app-category-color
+                        [categoryName]="debtItem.type"
+                      ></app-category-color>
+                    </span>
                   </td>
                   <td class="align-middle text-center">
                     <span class="text-secondary text-xs">
@@ -130,8 +132,10 @@
                   <div class="row d-flex flex-row">
                     <p class="text-xs text-secondary mb-0 col-6">Catégorie :</p>
                     <span class="text-secondary text-xs col-6">
-                      {{ debtItem.type }}</span
-                    >
+                      <app-category-color
+                        [categoryName]="debtItem.type"
+                      ></app-category-color>
+                    </span>
                   </div>
                 </td>
                 <td class="align-middle text-center">
