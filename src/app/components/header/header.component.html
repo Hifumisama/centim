@@ -1,0 +1,36 @@
+<ng-container *ngIf="displayHeader">
+  <nav
+    class="navbar navbar-main navbar-expand-lg p-0 mb-3 shadow-none"
+    id="navbarBlur"
+    data-scroll="true"
+  >
+    <div class="container-fluid p-3">
+      <div class="d-flex flex-row align-items-center">
+        <img src="assets/img/logocentim.svg" width="120px" />
+        <ng-container *ngIf="pageName === 'Tableau de bord'">
+          <a class="mb-0 px-2" [routerLink]="['/debtList']">
+            Feuilles de dettes
+          </a>
+          <p class="mb-0 px-2">></p>
+        </ng-container>
+        <p class="mb-0 px-2 font-weight-bolder">{{ pageName }}</p>
+      </div>
+
+      <div class="mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <ul
+          class="navbar-nav justify-content-end flex-row align-items-center ms-md-auto"
+        >
+          <li class="px-3">
+            <div>Bonjour {{ username }}</div>
+          </li>
+          <li
+            class="nav-item d-flex align-items-center interactive"
+            (click)="signOut()"
+          >
+            <i class="fa fa-sign-out-alt xl-icon"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</ng-container>

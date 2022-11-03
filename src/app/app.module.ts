@@ -25,6 +25,7 @@ import { HeroComponent } from './components/hero/hero.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { LastExpanseComponent } from './components/last-expanse/last-expanse.component';
 import { CategoryColorComponent } from './components/category-color/category-color.component';
+import { HeaderComponent } from './components/header/header.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -47,6 +48,7 @@ registerLocaleData(localeFr);
     ChartComponent,
     LastExpanseComponent,
     CategoryColorComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

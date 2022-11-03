@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DebtList } from 'src/app/interfaces/interfaces';
 import { DebtListService } from 'src/app/services/debtList/debt-list.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
-import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-debt-sheet-edit',
@@ -35,13 +34,13 @@ export class DebtSheetEditComponent implements OnInit {
   }
 
   async upsertDebtSheet() {
+    const profile = await this.profileService.getProfile();
     const feuilleDette = {
       id: this.initialData.id,
       name: this.debtSheetForm.value.name,
       description: this.debtSheetForm.value.description,
       createdAt: this.initialData.createdAt,
-      createdBy:
-        this.initialData.createdBy || this.profileService.getProfile().username,
+      createdBy: this.initialData.createdBy || profile.username,
     };
     await this.debtListService.upsertDebtSheets(feuilleDette).then(() => {
       console.log('data updatée :D !');

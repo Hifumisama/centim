@@ -13,7 +13,11 @@ export class ProfileService {
 
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  getProfile(): Profile {
+  async getProfile(): Promise<Profile> {
+    if (this._profileSource.getValue().username === '') {
+      await this.fetchProfile();
+    }
+
     return this._profileSource.getValue();
   }
 
